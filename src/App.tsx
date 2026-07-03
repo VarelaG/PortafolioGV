@@ -599,34 +599,24 @@ function ProjectCard({
 // ------------------------------
 // FOOTER / CONTACT SECTION (100vh - Screen height)
 // ------------------------------
-const footerContainerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.1,
-    }
-  }
-} as const;
-
-const footerChildVariants = {
-  hidden: {
-    y: "110%",
-    rotate: 3,
-  },
-  visible: {
-    y: 0,
-    rotate: 0,
-    transition: {
-      type: "spring",
-      damping: 18,
-      stiffness: 75,
-    }
-  }
-} as const;
-
 function FooterSection({ onContactClick }: { onContactClick: () => void }) {
   return (
     <footer className="relative w-full min-h-[100dvh] flex flex-col justify-between bg-[#0C0C0C] text-[#D7E2EA] px-6 sm:px-10 md:px-12 py-12 sm:py-16 md:py-20 overflow-hidden z-20">
+      
+      {/* Background Video with flowing waves */}
+      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none overflow-hidden">
+        <video
+          src="/varela_word.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover opacity-25 brightness-75 select-none"
+        />
+        {/* Subtle dark overlay for high contrast readability */}
+        <div className="absolute inset-0 bg-[#0C0C0C]/40 backdrop-blur-[2px]" />
+      </div>
+
       {/* Top block: Header and Collaboration link */}
       <div className="w-full max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-end gap-6 sm:gap-10 border-b border-[#D7E2EA]/10 pb-10 md:pb-12 z-10">
         <div className="flex flex-col max-w-xl">
@@ -650,27 +640,8 @@ function FooterSection({ onContactClick }: { onContactClick: () => void }) {
         </div>
       </div>
 
-      {/* Middle block: Colosal Name "VARELA" with Staggered Reveal Animation */}
-      <div className="w-full max-w-6xl mx-auto flex justify-center items-center flex-grow py-6 sm:py-10 z-0 overflow-hidden select-none">
-        <motion.h1 
-          className="font-black uppercase leading-none text-center text-white tracking-widest text-[13vw] sm:text-[13.5vw] md:text-[14vw] lg:text-[15vw] w-full flex justify-center gap-[1.5vw] overflow-hidden"
-          variants={footerContainerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-        >
-          {"VARELA".split("").map((letter, idx) => (
-            <span key={idx} className="inline-block overflow-hidden py-2 sm:py-4">
-              <motion.span 
-                variants={footerChildVariants} 
-                className="inline-block bg-gradient-to-b from-white via-white/90 to-white/30 bg-clip-text text-transparent"
-              >
-                {letter}
-              </motion.span>
-            </span>
-          ))}
-        </motion.h1>
-      </div>
+      {/* Middle block: Spacer */}
+      <div className="w-full flex-grow py-12 z-10" />
 
       {/* Bottom block: Columns for info */}
       <div className="w-full max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-6 pt-10 border-t border-[#D7E2EA]/10 z-10">
