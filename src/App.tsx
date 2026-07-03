@@ -1,11 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, useScroll, useTransform, useMotionValue, useSpring, AnimatePresence } from 'framer-motion'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import SmoothScroller from './components/SmoothScroller'
 import FadeIn from './components/FadeIn'
 import AnimatedText from './components/AnimatedText'
 import ContactButton from './components/ContactButton'
 import LiveProjectButton from './components/LiveProjectButton'
 import TechStackSection from './components/TechStackSection'
+import GSAPRevealTitle from './components/GSAPRevealTitle'
+
+gsap.registerPlugin(ScrollTrigger)
 
 // Local portfolio project images
 const row1Images = [
@@ -372,11 +377,10 @@ function AboutSection({ onContactClick }: { onContactClick: () => void }) {
 
       {/* Main Content Box */}
       <div className="flex flex-col items-center justify-center text-center max-w-[900px] z-10">
-        <FadeIn delay={0} y={40}>
-          <h2 className="hero-heading font-black uppercase leading-none tracking-tight text-[clamp(3.5rem,10vw,160px)]">
-            Sobre Mí
-          </h2>
-        </FadeIn>
+        <GSAPRevealTitle
+          text="Sobre Mí"
+          className="hero-heading font-black uppercase leading-none tracking-tight text-[clamp(3.5rem,10vw,160px)]"
+        />
 
         {/* Gap 10/14/16 between heading and text */}
         <div className="h-10 sm:h-14 md:h-16" />
@@ -433,9 +437,10 @@ function ServicesSection() {
   return (
     <section id="services" className="relative w-full bg-[#FFFFFF] text-[#0C0C0C] rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px] px-5 sm:px-8 md:px-10 py-20 sm:py-24 md:py-32 z-20">
       <div className="max-w-5xl mx-auto flex flex-col">
-        <h2 className="font-black uppercase text-center text-[#0C0C0C] mb-16 sm:mb-20 md:mb-28 text-[clamp(3.5rem,10vw,160px)] leading-none tracking-tight">
-          Servicios
-        </h2>
+        <GSAPRevealTitle
+          text="Servicios"
+          className="font-black uppercase text-center text-[#0C0C0C] mb-16 sm:mb-20 md:mb-28 text-[clamp(3.5rem,10vw,160px)] leading-none tracking-tight"
+        />
 
         <div className="flex flex-col border-t border-[#0C0C0C]/15">
           {servicesData.map((service, idx) => (
@@ -478,11 +483,12 @@ function ProjectsSection() {
   return (
     <section id="projects" className="relative w-full bg-[#0C0C0C] rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px] -mt-10 sm:-mt-12 md:-mt-14 pb-24 sm:pb-32 px-5 sm:px-8 md:px-10 z-30 pt-20">
       <div className="max-w-5xl mx-auto flex flex-col mb-16 sm:mb-20">
-        <FadeIn delay={0} y={40} className="w-full text-center">
-          <h2 className="hero-heading font-black uppercase text-[clamp(3.5rem,10vw,160px)] leading-none tracking-tight mb-16">
-            Proyectos
-          </h2>
-        </FadeIn>
+        <div className="w-full text-center mb-16">
+          <GSAPRevealTitle
+            text="Proyectos"
+            className="hero-heading font-black uppercase text-[clamp(3.5rem,10vw,160px)] leading-none tracking-tight"
+          />
+        </div>
 
         {/* Sticky card stacking container */}
         <div className="flex flex-col gap-[10vh] sm:gap-[15vh]">
@@ -526,6 +532,32 @@ function ProjectCard({
 
   const targetScale = 1 - (totalCards - 1 - index) * 0.03
   const scale = useTransform(scrollYProgress, [0, 1], [1, targetScale])
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const imgs = containerRef.current.querySelectorAll('.parallax-img');
+
+    const ctx = gsap.context(() => {
+      imgs.forEach((img) => {
+        gsap.fromTo(img,
+          { yPercent: -8 },
+          {
+            yPercent: 8,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: img.parentElement,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true,
+            }
+          }
+        );
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   const handleLiveProject = () => {
     window.open('https://motionsites.ai', '_blank')
@@ -575,7 +607,7 @@ function ProjectCard({
               <img
                 src={images[0]}
                 alt={`${title} col1-top`}
-                className="w-full h-full object-cover object-top select-none pointer-events-none transition-[object-position] duration-[3500ms] ease-in-out group-hover:object-bottom rounded-[20px] sm:rounded-[25px] md:rounded-[30px]"
+                className="parallax-img w-full h-full object-cover object-top select-none pointer-events-none transition-[object-position] duration-[3500ms] ease-in-out group-hover:object-bottom scale-115 rounded-[20px] sm:rounded-[25px] md:rounded-[30px]"
                 loading="lazy"
               />
             </div>
@@ -586,7 +618,7 @@ function ProjectCard({
               <img
                 src={images[1]}
                 alt={`${title} col1-bottom`}
-                className="w-full h-full object-cover object-top select-none pointer-events-none transition-[object-position] duration-[3500ms] ease-in-out group-hover:object-bottom rounded-[20px] sm:rounded-[25px] md:rounded-[30px]"
+                className="parallax-img w-full h-full object-cover object-top select-none pointer-events-none transition-[object-position] duration-[3500ms] ease-in-out group-hover:object-bottom scale-115 rounded-[20px] sm:rounded-[25px] md:rounded-[30px]"
                 loading="lazy"
               />
             </div>
@@ -598,7 +630,7 @@ function ProjectCard({
               <img
                 src={images[2]}
                 alt={`${title} col2-tall`}
-                className="w-full h-full object-cover object-top select-none pointer-events-none transition-[object-position] duration-[3500ms] ease-in-out group-hover:object-bottom rounded-[20px] sm:rounded-[25px] md:rounded-[30px]"
+                className="parallax-img w-full h-full object-cover object-top select-none pointer-events-none transition-[object-position] duration-[3500ms] ease-in-out group-hover:object-bottom scale-115 rounded-[20px] sm:rounded-[25px] md:rounded-[30px]"
                 loading="lazy"
               />
             </div>
@@ -643,9 +675,10 @@ function FooterSection({ onContactClick }: { onContactClick: () => void }) {
       {/* Top block: Header and Collaboration link */}
       <div className="w-full max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-end gap-6 sm:gap-10 border-b border-[#D7E2EA]/10 pb-10 md:pb-12 z-10">
         <div className="flex flex-col max-w-xl">
-          <h2 className="font-extrabold uppercase leading-none tracking-tight text-[clamp(2.4rem,5.5vw,85px)] text-white">
-            ¿Trabajamos juntos?
-          </h2>
+          <GSAPRevealTitle
+            text="¿Trabajamos juntos?"
+            className="font-extrabold uppercase leading-none tracking-tight text-[clamp(2.4rem,5.5vw,85px)] text-white"
+          />
         </div>
         
         {/* Start a Collaboration Link */}

@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import GSAPRevealTitle from './GSAPRevealTitle';
 
 // Core Technologies metadata with logos, badges, custom glow branding, and technical profiles
 const TECH_ITEMS = [
@@ -334,9 +335,10 @@ export default function TechStackSection() {
 
       {/* Title Header */}
       <div className="max-w-5xl mx-auto flex flex-col items-center justify-center text-center w-full px-5">
-        <h2 className="font-black uppercase text-center text-white mb-16 sm:mb-20 md:mb-28 text-[clamp(3.5rem,10vw,160px)] leading-none tracking-tight w-full">
-          mi stack
-        </h2>
+        <GSAPRevealTitle
+          text="mi stack"
+          className="font-black uppercase text-center text-white mb-16 sm:mb-20 md:mb-28 text-[clamp(3.5rem,10vw,160px)] leading-none tracking-tight w-full"
+        />
       </div>
 
       {/* Grid containing the glassmorphic interactive cards */}
