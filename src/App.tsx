@@ -603,7 +603,7 @@ function FooterSection({ onContactClick }: { onContactClick: () => void }) {
   return (
     <footer className="relative w-full min-h-[100dvh] flex flex-col justify-between bg-[#0C0C0C] text-[#D7E2EA] px-6 sm:px-10 md:px-12 py-12 sm:py-16 md:py-20 overflow-hidden z-20">
       
-      {/* Background Video with flowing waves */}
+      {/* Background Video with flowing waves (no blur and higher opacity for crisp view) */}
       <div className="absolute inset-0 w-full h-full z-0 pointer-events-none overflow-hidden">
         <video
           src="/varela_word.mp4"
@@ -611,14 +611,12 @@ function FooterSection({ onContactClick }: { onContactClick: () => void }) {
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-25 brightness-75 select-none"
+          className="absolute inset-0 w-full h-full object-cover opacity-85 select-none"
         />
-        {/* Subtle dark overlay for high contrast readability */}
-        <div className="absolute inset-0 bg-[#0C0C0C]/40 backdrop-blur-[2px]" />
       </div>
 
       {/* Top block: Header and Collaboration link */}
-      <div className="w-full max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-end gap-6 sm:gap-10 border-b border-[#D7E2EA]/10 pb-10 md:pb-12 z-10">
+      <div className="w-full max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-end gap-6 sm:gap-10 pb-10 md:pb-12 z-10">
         <div className="flex flex-col max-w-xl">
           <GSAPRevealTitle
             text="¿Trabajamos juntos?"
@@ -644,7 +642,7 @@ function FooterSection({ onContactClick }: { onContactClick: () => void }) {
       <div className="w-full flex-grow py-12 z-10" />
 
       {/* Bottom block: Columns for info */}
-      <div className="w-full max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-6 pt-10 border-t border-[#D7E2EA]/10 z-10">
+      <div className="w-full max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-6 pt-10 z-10">
         {/* Column 1: Business Enquiry */}
         <div className="flex flex-col gap-2">
           <span className="text-[10px] font-semibold tracking-[0.18em] text-[#D7E2EA]/35 uppercase">
