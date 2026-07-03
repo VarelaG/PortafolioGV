@@ -1,68 +1,63 @@
-import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
+import { motion } from 'framer-motion';
 
 interface GSAPRevealTitleProps {
   text: string;
   className?: string;
+  justifyClass?: string; // 'justify-center' | 'justify-start'
 }
 
-export default function GSAPRevealTitle({ text, className = '' }: GSAPRevealTitleProps) {
-  const containerRef = useRef<HTMLHeadingElement>(null);
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.022,
+    }
+  }
+} as const;
 
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
+const letterVariants = {
+  hidden: {
+    y: "110%",
+    rotate: 2,
+  },
+  visible: {
+    y: 0,
+    rotate: 0,
+    transition: {
+      type: "spring",
+      damping: 16,
+      stiffness: 90,
+    }
+  }
+} as const;
 
-    // Clear previous content to avoid duplications on hot-reloading
-    el.innerHTML = '';
-
-    // Split text by words
-    const words = text.split(' ');
-
-    words.forEach((word) => {
-      // Word container that wraps letters to prevent breaking issues on mobile
-      const wordSpan = document.createElement('span');
-      wordSpan.className = 'inline-block overflow-hidden whitespace-nowrap';
-      wordSpan.style.marginRight = '0.25em';
-
-      // Split word by letters
-      const letters = word.split('');
-      letters.forEach((letter) => {
-        const letterSpan = document.createElement('span');
-        letterSpan.className = 'char-span inline-block transform translate-y-[110%]';
-        letterSpan.textContent = letter;
-        wordSpan.appendChild(letterSpan);
-      });
-
-      el.appendChild(wordSpan);
-    });
-
-    const targets = el.querySelectorAll('.char-span');
-
-    const ctx = gsap.context(() => {
-      gsap.to(targets, {
-        y: '0%',
-        duration: 1.1,
-        stagger: 0.025,
-        ease: 'power4.out',
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 88%', // Starts animating when 12% in view
-          toggleActions: 'play none none none',
-        }
-      });
-    }, el);
-
-    return () => ctx.revert();
-  }, [text]);
+export default function GSAPRevealTitle({ text, className = '', justifyClass }: GSAPRevealTitleProps) {
+  const words = text.split(' ');
+  
+  // Resolve layout alignment dynamically
+  const defaultJustify = justifyClass || (className.includes('text-left') || className.includes('justify-start') ? 'justify-start' : 'justify-center');
 
   return (
-    <h2
-      ref={containerRef}
-      className={className}
-    />
+    <motion.h2
+      className={`${className} flex flex-wrap ${defaultJustify} overflow-hidden`}
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.15 }}
+    >
+      {words.map((word, wordIdx) => (
+        <span key={wordIdx} className="inline-block overflow-hidden whitespace-nowrap mr-[0.25em] py-1 sm:py-1.5">
+          {word.split('').map((letter, letterIdx) => (
+            <motion.span
+              key={letterIdx}
+              variants={letterVariants}
+              className="inline-block"
+            >
+              {letter}
+            </motion.span>
+          ))}
+        </span>
+      ))}
+    </motion.h2>
   );
 }
