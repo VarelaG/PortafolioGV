@@ -600,18 +600,45 @@ function ProjectCard({
 // FOOTER / CONTACT SECTION (100vh - Screen height)
 // ------------------------------
 function FooterSection({ onContactClick }: { onContactClick: () => void }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoOpacity, setVideoOpacity] = useState(0.85);
+
+  const handleTimeUpdate = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const duration = video.duration || 8;
+    const currentTime = video.currentTime;
+
+    // Smoothly fade-out the video 0.4 seconds before it ends, and fade-in during the first 0.4 seconds of replay
+    const transitionWindow = 0.4;
+
+    if (currentTime > duration - transitionWindow) {
+      const ratio = (duration - currentTime) / transitionWindow;
+      setVideoOpacity(0.85 * Math.max(0, ratio));
+    } else if (currentTime < transitionWindow) {
+      const ratio = currentTime / transitionWindow;
+      setVideoOpacity(0.85 * Math.min(1, ratio));
+    } else {
+      setVideoOpacity(0.85);
+    }
+  };
+
   return (
-    <footer className="relative w-full min-h-[100dvh] flex flex-col justify-between bg-[#0C0C0C] text-[#D7E2EA] px-6 sm:px-10 md:px-12 py-12 sm:py-16 md:py-20 overflow-hidden z-20">
+    <footer className="relative w-full min-h-[100dvh] flex flex-col justify-between bg-[#000000] text-[#D7E2EA] px-6 sm:px-10 md:px-12 py-12 sm:py-16 md:py-20 overflow-hidden z-20">
       
       {/* Background Video with flowing waves (no blur and higher opacity for crisp view) */}
       <div className="absolute inset-0 w-full h-full z-0 pointer-events-none overflow-hidden">
         <video
+          ref={videoRef}
           src="/varela_word.mp4"
           autoPlay
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-85 select-none"
+          onTimeUpdate={handleTimeUpdate}
+          className="absolute inset-0 w-full h-full object-cover select-none transition-opacity duration-200 ease-out"
+          style={{ opacity: videoOpacity }}
         />
       </div>
 
