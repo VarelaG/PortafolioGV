@@ -88,7 +88,7 @@ export default function App() {
         <ServicesSection />
 
         {/* 5. PROJECTS SECTION */}
-        <ProjectsSection />
+        <ProjectsSection onImageClick={setSelectedImage} />
 
         {/* 6. TECH STACK 3D CAROUSEL SECTION */}
         <TechStackSection />
@@ -434,7 +434,7 @@ function ServicesSection() {
 // ------------------------------
 // PROJECTS SECTION COMPONENT
 // ------------------------------
-function ProjectsSection() {
+function ProjectsSection({ onImageClick }: { onImageClick: (url: string) => void }) {
   return (
     <section id="projects" className="relative w-full bg-[#0C0C0C] rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px] -mt-10 sm:-mt-12 md:-mt-14 pb-24 sm:pb-32 px-5 sm:px-8 md:px-10 z-30 pt-20">
       <div className="max-w-5xl mx-auto flex flex-col mb-16 sm:mb-20">
@@ -452,6 +452,7 @@ function ProjectsSection() {
               key={project.number}
               index={idx}
               totalCards={projects.length}
+              onImageClick={onImageClick}
               {...project}
             />
           ))}
@@ -468,7 +469,8 @@ function ProjectCard({
   number,
   category,
   title,
-  images
+  images,
+  onImageClick
 }: {
   index: number
   totalCards: number
@@ -476,6 +478,7 @@ function ProjectCard({
   category: string
   title: string
   images: string[]
+  onImageClick: (url: string) => void
 }) {
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -496,9 +499,9 @@ function ProjectCard({
     const ctx = gsap.context(() => {
       imgs.forEach((img) => {
         gsap.fromTo(img,
-          { yPercent: -8 },
+          { yPercent: -4 },
           {
-            yPercent: 8,
+            yPercent: 4,
             ease: 'none',
             scrollTrigger: {
               trigger: img.parentElement,
@@ -551,43 +554,100 @@ function ProjectCard({
           <LiveProjectButton onClick={handleLiveProject} className="flex-shrink-0" />
         </div>
 
-        {/* Bottom Row: 2-Column Image Grid */}
+        {/* Bottom Row: 2-Column Image Grid with macOS Browser Frame styling */}
         <div className="flex-grow flex flex-col sm:flex-row gap-4 sm:gap-6 mt-4 sm:mt-6 overflow-hidden">
           {/* Left Column (40% width on sm+) */}
           <div className="w-full sm:w-[40%] flex flex-col gap-4 sm:gap-6 justify-center">
+            {/* Top Frame */}
             <div
-              className="w-full rounded-[20px] sm:rounded-[25px] md:rounded-[30px] border border-[#D7E2EA]/10 bg-[#0A0A0B] shadow-lg overflow-hidden group"
+              className="w-full rounded-[20px] sm:rounded-[25px] border border-[#D7E2EA]/10 bg-[#0C0C0D] shadow-xl overflow-hidden flex flex-col cursor-pointer group active:scale-[0.99] transition-transform duration-200"
               style={{ height: 'clamp(100px, 16vw, 230px)' }}
+              onClick={() => onImageClick(images[0])}
             >
-              <img
-                src={images[0]}
-                alt={`${title} col1-top`}
-                className="parallax-img w-full h-full object-cover object-top select-none pointer-events-none transition-[object-position] duration-[3500ms] ease-in-out group-hover:object-bottom scale-115 rounded-[20px] sm:rounded-[25px] md:rounded-[30px]"
-                loading="lazy"
-              />
+              {/* macOS Browser Header */}
+              <div className="h-6 sm:h-7 w-full bg-[#161618] border-b border-white/5 flex items-center justify-between px-3 sm:px-4 flex-shrink-0 select-none">
+                <div className="flex gap-1.5 items-center">
+                  <span className="w-2 h-2 rounded-full bg-[#FF5F56]" />
+                  <span className="w-2 h-2 rounded-full bg-[#FFBD2E]" />
+                  <span className="w-2 h-2 rounded-full bg-[#27C93F]" />
+                </div>
+                <div className="text-[7.5px] sm:text-[9px] font-mono text-white/30 tracking-wider truncate max-w-[160px]">
+                  {title.toLowerCase().replace(/\s+/g, '-')}.app/dashboard
+                </div>
+                <div className="w-6" />
+              </div>
+              
+              {/* Image Viewport */}
+              <div className="flex-grow overflow-hidden relative">
+                <img
+                  src={images[0]}
+                  alt={`${title} col1-top`}
+                  className="parallax-img w-full h-full object-cover object-top select-none pointer-events-none scale-105 transition-all duration-300 group-hover:scale-110 group-hover:brightness-110"
+                  loading="lazy"
+                />
+              </div>
             </div>
+
+            {/* Bottom Frame */}
             <div
-              className="w-full rounded-[20px] sm:rounded-[25px] md:rounded-[30px] border border-[#D7E2EA]/10 bg-[#0A0A0B] shadow-lg overflow-hidden group"
+              className="w-full rounded-[20px] sm:rounded-[25px] border border-[#D7E2EA]/10 bg-[#0C0C0D] shadow-xl overflow-hidden flex flex-col cursor-pointer group active:scale-[0.99] transition-transform duration-200"
               style={{ height: 'clamp(120px, 22vw, 340px)' }}
+              onClick={() => onImageClick(images[1])}
             >
-              <img
-                src={images[1]}
-                alt={`${title} col1-bottom`}
-                className="parallax-img w-full h-full object-cover object-top select-none pointer-events-none transition-[object-position] duration-[3500ms] ease-in-out group-hover:object-bottom scale-115 rounded-[20px] sm:rounded-[25px] md:rounded-[30px]"
-                loading="lazy"
-              />
+              {/* macOS Browser Header */}
+              <div className="h-6 sm:h-7 w-full bg-[#161618] border-b border-white/5 flex items-center justify-between px-3 sm:px-4 flex-shrink-0 select-none">
+                <div className="flex gap-1.5 items-center">
+                  <span className="w-2 h-2 rounded-full bg-[#FF5F56]" />
+                  <span className="w-2 h-2 rounded-full bg-[#FFBD2E]" />
+                  <span className="w-2 h-2 rounded-full bg-[#27C93F]" />
+                </div>
+                <div className="text-[7.5px] sm:text-[9px] font-mono text-white/30 tracking-wider truncate max-w-[160px]">
+                  {title.toLowerCase().replace(/\s+/g, '-')}.app/analytics
+                </div>
+                <div className="w-6" />
+              </div>
+
+              {/* Image Viewport */}
+              <div className="flex-grow overflow-hidden relative">
+                <img
+                  src={images[1]}
+                  alt={`${title} col1-bottom`}
+                  className="parallax-img w-full h-full object-cover object-top select-none pointer-events-none scale-105 transition-all duration-300 group-hover:scale-110 group-hover:brightness-110"
+                  loading="lazy"
+                />
+              </div>
             </div>
           </div>
 
           {/* Right Column (60% width on sm+) */}
           <div className="w-full sm:w-[60%] flex items-center">
-            <div className="w-full h-full rounded-[20px] sm:rounded-[25px] md:rounded-[30px] bg-[#0A0A0B] border border-[#D7E2EA]/10 shadow-lg overflow-hidden group">
-              <img
-                src={images[2]}
-                alt={`${title} col2-tall`}
-                className="parallax-img w-full h-full object-cover object-top select-none pointer-events-none transition-[object-position] duration-[3500ms] ease-in-out group-hover:object-bottom scale-115 rounded-[20px] sm:rounded-[25px] md:rounded-[30px]"
-                loading="lazy"
-              />
+            {/* Tall Frame */}
+            <div
+              className="w-full h-full rounded-[20px] sm:rounded-[25px] bg-[#0C0C0D] border border-[#D7E2EA]/10 shadow-xl overflow-hidden flex flex-col cursor-pointer group active:scale-[0.99] transition-transform duration-200"
+              onClick={() => onImageClick(images[2])}
+            >
+              {/* macOS Browser Header */}
+              <div className="h-6 sm:h-7 w-full bg-[#161618] border-b border-white/5 flex items-center justify-between px-3 sm:px-4 flex-shrink-0 select-none">
+                <div className="flex gap-1.5 items-center">
+                  <span className="w-2 h-2 rounded-full bg-[#FF5F56]" />
+                  <span className="w-2 h-2 rounded-full bg-[#FFBD2E]" />
+                  <span className="w-2 h-2 rounded-full bg-[#27C93F]" />
+                </div>
+                <div className="text-[7.5px] sm:text-[9px] font-mono text-white/30 tracking-wider truncate max-w-[180px]">
+                  {title.toLowerCase().replace(/\s+/g, '-')}.app/workflow
+                </div>
+                <div className="w-6" />
+              </div>
+
+              {/* Image Viewport */}
+              <div className="flex-grow overflow-hidden relative">
+                <img
+                  src={images[2]}
+                  alt={`${title} col2-tall`}
+                  className="parallax-img w-full h-full object-cover object-top select-none pointer-events-none scale-105 transition-all duration-300 group-hover:scale-110 group-hover:brightness-110"
+                  loading="lazy"
+                />
+              </div>
             </div>
           </div>
         </div>
