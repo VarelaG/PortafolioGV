@@ -43,7 +43,7 @@ export default function GSAPRevealTitle({ text, className = '', justifyClass }: 
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.15 }}
+      viewport={{ once: true, amount: "some", margin: "0px 0px 80px 0px" }}
     >
       {words.map((word, wordIdx) => (
         <span key={wordIdx} className="inline-block overflow-hidden whitespace-nowrap mr-[0.25em] py-1 sm:py-1.5">
