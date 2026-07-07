@@ -46,7 +46,7 @@ export default function GSAPRevealTitle({ text, className = '', justifyClass }: 
       viewport={{ once: true, amount: "some", margin: "0px 0px 80px 0px" }}
     >
       {words.map((word, wordIdx) => (
-        <span key={wordIdx} className="inline-block overflow-hidden whitespace-nowrap mr-[0.25em] px-1 py-6 sm:py-10 -my-6 sm:-my-10">
+        <span key={wordIdx} className="inline-block overflow-hidden whitespace-nowrap mr-[0.25em] px-3 py-6 sm:py-10 -my-6 sm:-my-10">
           {word.split('').map((letter, letterIdx) => (
             <motion.span
               key={letterIdx}
