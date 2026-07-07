@@ -9,6 +9,7 @@ import ContactButton from './components/ContactButton'
 import LiveProjectButton from './components/LiveProjectButton'
 import TechStackSection from './components/TechStackSection'
 import GSAPRevealTitle from './components/GSAPRevealTitle'
+import CustomCursor from './components/CustomCursor'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -71,6 +72,7 @@ export default function App() {
 
   return (
     <SmoothScroller>
+      <CustomCursor />
       <div ref={scrollRef} className="relative w-full text-[#D7E2EA] bg-[#0C0C0C] overflow-x-clip">
         {/* Decorative Grid Mesh glows for visual premium feel */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-950/10 via-background to-background pointer-events-none z-0" />
@@ -563,6 +565,7 @@ function ProjectCard({
               className="w-full rounded-[20px] sm:rounded-[25px] border border-[#D7E2EA]/10 bg-[#0C0C0D] shadow-xl overflow-hidden flex flex-col cursor-pointer group active:scale-[0.99] transition-transform duration-200"
               style={{ height: 'clamp(100px, 16vw, 230px)' }}
               onClick={() => onImageClick(images[0])}
+              data-cursor="view"
             >
               {/* macOS Browser Header */}
               <div className="h-6 sm:h-7 w-full bg-[#161618] border-b border-white/5 flex items-center justify-between px-3 sm:px-4 flex-shrink-0 select-none">
@@ -593,6 +596,7 @@ function ProjectCard({
               className="w-full rounded-[20px] sm:rounded-[25px] border border-[#D7E2EA]/10 bg-[#0C0C0D] shadow-xl overflow-hidden flex flex-col cursor-pointer group active:scale-[0.99] transition-transform duration-200"
               style={{ height: 'clamp(120px, 22vw, 340px)' }}
               onClick={() => onImageClick(images[1])}
+              data-cursor="view"
             >
               {/* macOS Browser Header */}
               <div className="h-6 sm:h-7 w-full bg-[#161618] border-b border-white/5 flex items-center justify-between px-3 sm:px-4 flex-shrink-0 select-none">
@@ -625,6 +629,7 @@ function ProjectCard({
             <div
               className="w-full h-full rounded-[20px] sm:rounded-[25px] bg-[#0C0C0D] border border-[#D7E2EA]/10 shadow-xl overflow-hidden flex flex-col cursor-pointer group active:scale-[0.99] transition-transform duration-200"
               onClick={() => onImageClick(images[2])}
+              data-cursor="view"
             >
               {/* macOS Browser Header */}
               <div className="h-6 sm:h-7 w-full bg-[#161618] border-b border-white/5 flex items-center justify-between px-3 sm:px-4 flex-shrink-0 select-none">

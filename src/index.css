@@ -77,3 +77,10 @@ html.lenis body {
   color: rgba(215, 226, 234, 0.03);
   transform: translateY(-2px);
 }
+
+/* Custom interactive cursor support (desktop hover only) */
+@media (hover: hover) and (pointer: fine) {
+  body, a, button, select, input, textarea, [role="button"], .cursor-pointer {
+    cursor: none !important;
+  }
+}

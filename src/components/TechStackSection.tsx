@@ -223,6 +223,7 @@ function TechCard({ tech, index }: TechCardProps) {
       style={{
         perspective: '1000px',
       }}
+      data-cursor="spin"
     >
       {/* Rotation viewport container (preserve-3d) */}
       <div
