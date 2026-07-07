@@ -79,7 +79,7 @@ export default function CustomCursor() {
     <>
       {/* Central focus dot */}
       <motion.div
-        className="fixed top-0 left-0 w-1.5 h-1.5 bg-white rounded-full pointer-events-none z-[9999] mix-blend-difference -translate-x-1/2 -translate-y-1/2"
+        className="fixed top-0 left-0 w-2.5 h-2.5 bg-white rounded-full pointer-events-none z-[9999] mix-blend-difference -translate-x-1/2 -translate-y-1/2 shadow-[0_1px_3px_rgba(0,0,0,0.3)]"
         style={{
           x: mouseX,
           y: mouseY,
@@ -89,15 +89,15 @@ export default function CustomCursor() {
 
       {/* Smooth fluid outer ring */}
       <motion.div
-        className="fixed top-0 left-0 rounded-full pointer-events-none z-[9998] flex items-center justify-center -translate-x-1/2 -translate-y-1/2 border border-white mix-blend-difference"
+        className="fixed top-0 left-0 rounded-full pointer-events-none z-[9998] flex items-center justify-center -translate-x-1/2 -translate-y-1/2 border-2 border-white mix-blend-difference"
         style={{
           x: ringX,
           y: ringY,
         }}
         animate={{
-          width: cursorType === 'view' || cursorType === 'spin' ? 70 : cursorType === 'pointer' ? 48 : 22,
-          height: cursorType === 'view' || cursorType === 'spin' ? 70 : cursorType === 'pointer' ? 48 : 22,
-          backgroundColor: cursorType === 'view' || cursorType === 'spin' ? 'rgba(255, 255, 255, 1)' : 'rgba(255, 255, 255, 0)',
+          width: cursorType === 'view' || cursorType === 'spin' ? 74 : cursorType === 'pointer' ? 52 : 24,
+          height: cursorType === 'view' || cursorType === 'spin' ? 74 : cursorType === 'pointer' ? 52 : 24,
+          backgroundColor: cursorType === 'view' || cursorType === 'spin' ? 'rgba(255, 255, 255, 1)' : 'rgba(255, 255, 255, 0.08)',
           borderColor: cursorType === 'view' || cursorType === 'spin' ? 'rgba(255, 255, 255, 1)' : 'rgba(255, 255, 255, 1)',
         }}
         transition={{ type: 'spring', stiffness: 350, damping: 28 }}
