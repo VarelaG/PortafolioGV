@@ -341,7 +341,7 @@ function AboutSection({ onContactClick }: { onContactClick: () => void }) {
       <div className="flex flex-col items-center justify-center text-center max-w-[900px] z-10">
         <GSAPRevealTitle
           text="Sobre Mí"
-          className="hero-heading font-black uppercase leading-none tracking-tight text-[clamp(3.5rem,10vw,160px)]"
+          className="hero-heading font-black uppercase leading-none tracking-tight text-[clamp(2.4rem,10vw,160px)]"
         />
 
         {/* Gap 10/14/16 between heading and text */}
@@ -401,7 +401,7 @@ function ServicesSection() {
       <div className="max-w-5xl mx-auto flex flex-col">
         <GSAPRevealTitle
           text="Servicios"
-          className="font-black uppercase text-center text-[#0C0C0C] mb-16 sm:mb-20 md:mb-28 text-[clamp(3.5rem,10vw,160px)] leading-none tracking-tight"
+          className="font-black uppercase text-center text-[#0C0C0C] mb-16 sm:mb-20 md:mb-28 text-[clamp(2.4rem,10vw,160px)] leading-none tracking-tight"
         />
 
         <div className="flex flex-col border-t border-[#0C0C0C]/15">
@@ -448,7 +448,7 @@ function ProjectsSection({ onImageClick }: { onImageClick: (url: string) => void
         <div className="w-full text-center mb-16">
           <GSAPRevealTitle
             text="Proyectos"
-            className="hero-heading font-black uppercase text-[clamp(3.5rem,10vw,160px)] leading-none tracking-tight"
+            className="hero-heading font-black uppercase text-[clamp(2.4rem,10vw,160px)] leading-none tracking-tight"
           />
         </div>
 
@@ -564,34 +564,38 @@ function ProjectCard({
         {/* Bottom Row: 2-Column Image Grid (Desktop/Tablet) or Single Image Mockup (Mobile) */}
         <div className="flex-grow flex flex-col sm:flex-row gap-4 sm:gap-6 mt-4 sm:mt-6 overflow-hidden">
           
-          {/* Mobile Viewport: Single macOS Mockup (hidden on sm+) */}
-          <div
-            className="flex sm:hidden w-full h-full rounded-[20px] bg-[#0C0C0D] border border-[#D7E2EA]/10 shadow-xl overflow-hidden flex-col cursor-pointer group active:scale-[0.99] transition-transform duration-200"
-            onClick={() => onImageClick(images[0])}
-            data-cursor="view"
-          >
-            {/* macOS Browser Header */}
-            <div className="h-6 w-full bg-[#161618] border-b border-white/5 flex items-center justify-between px-3 flex-shrink-0 select-none">
-              <div className="flex gap-1.5 items-center">
-                <span className="w-2 h-2 rounded-full bg-[#FF5F56]" />
-                <span className="w-2 h-2 rounded-full bg-[#FFBD2E]" />
-                <span className="w-2 h-2 rounded-full bg-[#27C93F]" />
+          {/* Mobile Viewport: Horizontal Swiper Slider for all 3 images (hidden on sm+) */}
+          <div className="flex sm:hidden w-full flex-grow overflow-x-auto snap-x snap-mandatory gap-4 scrollbar-none -mx-2 px-2 py-1 items-center">
+            {images.map((img, imgIdx) => (
+              <div
+                key={imgIdx}
+                className="w-[78vw] h-[90%] shrink-0 snap-center rounded-[20px] bg-[#0C0C0D] border border-[#D7E2EA]/10 shadow-xl overflow-hidden flex flex-col cursor-pointer active:scale-[0.99] transition-transform duration-200"
+                onClick={() => onImageClick(img)}
+              >
+                {/* Browser Header */}
+                <div className="h-6 w-full bg-[#161618] border-b border-white/5 flex items-center justify-between px-3 flex-shrink-0 select-none">
+                  <div className="flex gap-1.5 items-center">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#FF5F56]" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#FFBD2E]" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#27C93F]" />
+                  </div>
+                  <div className="text-[7px] font-mono text-white/30 tracking-wider truncate max-w-[140px]">
+                    {title.toLowerCase().replace(/\s+/g, '-')}.app/{imgIdx === 0 ? 'dashboard' : imgIdx === 1 ? 'analytics' : 'workflow'}
+                  </div>
+                  <div className="w-4" />
+                </div>
+                
+                {/* Image Viewport */}
+                <div className="flex-grow overflow-hidden relative">
+                  <img
+                    src={img}
+                    alt={`${title} img-${imgIdx}`}
+                    className="w-full h-full object-cover object-top select-none pointer-events-none"
+                    loading="lazy"
+                  />
+                </div>
               </div>
-              <div className="text-[8px] font-mono text-white/30 tracking-wider truncate max-w-[180px]">
-                {title.toLowerCase().replace(/\s+/g, '-')}.app/dashboard
-              </div>
-              <div className="w-6" />
-            </div>
-            
-            {/* Image Viewport */}
-            <div className="flex-grow overflow-hidden relative">
-              <img
-                src={images[0]}
-                alt={`${title} mobile featured`}
-                className="w-full h-full object-cover object-top select-none pointer-events-none"
-                loading="lazy"
-              />
-            </div>
+            ))}
           </div>
 
           {/* Desktop/Tablet Viewport: Left Column (40% width, hidden on mobile) */}
