@@ -12,17 +12,19 @@ export default function LiveProjectButton({ className = '', ...props }: LiveProj
         border-2 
         border-[#D7E2EA] 
         text-[#D7E2EA] 
-        font-medium 
+        font-semibold 
         uppercase 
-        tracking-widest 
+        tracking-wider 
         transition-all 
         duration-300 
         hover:bg-[#D7E2EA]/10
         active:scale-[0.98]
-        px-8 py-3 
-        sm:px-10 sm:py-3.5 
-        text-sm 
-        sm:text-base
+        px-4 py-1.5
+        xs:px-6 xs:py-2
+        sm:px-8 sm:py-3
+        text-[10px]
+        xs:text-xs
+        sm:text-sm
         cursor-pointer
         ${className}
       `}

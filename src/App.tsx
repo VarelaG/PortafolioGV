@@ -10,6 +10,7 @@ import LiveProjectButton from './components/LiveProjectButton'
 import TechStackSection from './components/TechStackSection'
 import GSAPRevealTitle from './components/GSAPRevealTitle'
 import CustomCursor from './components/CustomCursor'
+import HorizontalWebsSection, { HorizontalWebsMobileSection } from './components/HorizontalWebsSection'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -91,6 +92,10 @@ export default function App() {
 
         {/* 5. PROJECTS SECTION */}
         <ProjectsSection onImageClick={setSelectedImage} />
+
+        {/* 6. HORIZONTAL WEBS SECTION */}
+        <HorizontalWebsSection />
+        <HorizontalWebsMobileSection />
 
         {/* 6. TECH STACK 3D CAROUSEL SECTION */}
         <TechStackSection />
@@ -539,16 +544,16 @@ function ProjectCard({
         className="w-full h-full rounded-[35px] sm:rounded-[50px] md:rounded-[60px] border-2 border-[#D7E2EA]/15 bg-[#0C0C0C] p-4 sm:p-6 md:p-8 flex flex-col justify-between shadow-[0_25px_60px_rgba(0,0,0,0.9)]"
       >
         {/* Top Row */}
-        <div className="flex flex-row justify-between items-center gap-4 border-b border-[#D7E2EA]/10 pb-4 sm:pb-6">
-          <div className="flex items-center gap-4 sm:gap-6">
-            <span className="font-black text-[clamp(2rem,6vw,90px)] leading-none text-[#D7E2EA]">
+        <div className="flex flex-row justify-between items-center gap-2 sm:gap-4 border-b border-[#D7E2EA]/10 pb-4 sm:pb-6">
+          <div className="flex items-center gap-2 sm:gap-6 min-w-0">
+            <span className="font-black text-[clamp(1.8rem,5vw,90px)] leading-none text-[#D7E2EA] flex-shrink-0">
               {number}
             </span>
-            <div className="flex flex-col">
-              <span className="text-[10px] sm:text-xs uppercase tracking-widest text-[#D7E2EA]/40 font-medium">
+            <div className="flex flex-col min-w-0">
+              <span className="text-[9px] sm:text-xs uppercase tracking-widest text-[#D7E2EA]/40 font-medium truncate">
                 {category}
               </span>
-              <h3 className="text-sm sm:text-lg md:text-2xl font-semibold text-[#D7E2EA] uppercase tracking-wide leading-tight">
+              <h3 className="text-xs xs:text-sm sm:text-lg md:text-2xl font-semibold text-[#D7E2EA] uppercase tracking-wide leading-tight truncate sm:whitespace-normal">
                 {title}
               </h3>
             </div>
@@ -556,10 +561,41 @@ function ProjectCard({
           <LiveProjectButton onClick={handleLiveProject} className="flex-shrink-0" />
         </div>
 
-        {/* Bottom Row: 2-Column Image Grid with macOS Browser Frame styling */}
+        {/* Bottom Row: 2-Column Image Grid (Desktop/Tablet) or Single Image Mockup (Mobile) */}
         <div className="flex-grow flex flex-col sm:flex-row gap-4 sm:gap-6 mt-4 sm:mt-6 overflow-hidden">
-          {/* Left Column (40% width on sm+) */}
-          <div className="w-full sm:w-[40%] flex flex-col gap-4 sm:gap-6 justify-center">
+          
+          {/* Mobile Viewport: Single macOS Mockup (hidden on sm+) */}
+          <div
+            className="flex sm:hidden w-full h-full rounded-[20px] bg-[#0C0C0D] border border-[#D7E2EA]/10 shadow-xl overflow-hidden flex-col cursor-pointer group active:scale-[0.99] transition-transform duration-200"
+            onClick={() => onImageClick(images[0])}
+            data-cursor="view"
+          >
+            {/* macOS Browser Header */}
+            <div className="h-6 w-full bg-[#161618] border-b border-white/5 flex items-center justify-between px-3 flex-shrink-0 select-none">
+              <div className="flex gap-1.5 items-center">
+                <span className="w-2 h-2 rounded-full bg-[#FF5F56]" />
+                <span className="w-2 h-2 rounded-full bg-[#FFBD2E]" />
+                <span className="w-2 h-2 rounded-full bg-[#27C93F]" />
+              </div>
+              <div className="text-[8px] font-mono text-white/30 tracking-wider truncate max-w-[180px]">
+                {title.toLowerCase().replace(/\s+/g, '-')}.app/dashboard
+              </div>
+              <div className="w-6" />
+            </div>
+            
+            {/* Image Viewport */}
+            <div className="flex-grow overflow-hidden relative">
+              <img
+                src={images[0]}
+                alt={`${title} mobile featured`}
+                className="w-full h-full object-cover object-top select-none pointer-events-none"
+                loading="lazy"
+              />
+            </div>
+          </div>
+
+          {/* Desktop/Tablet Viewport: Left Column (40% width, hidden on mobile) */}
+          <div className="hidden sm:flex w-full sm:w-[40%] flex-col gap-4 sm:gap-6 justify-center">
             {/* Top Frame */}
             <div
               className="w-full rounded-[20px] sm:rounded-[25px] border border-[#D7E2EA]/10 bg-[#0C0C0D] shadow-xl overflow-hidden flex flex-col cursor-pointer group active:scale-[0.99] transition-transform duration-200"
@@ -623,8 +659,8 @@ function ProjectCard({
             </div>
           </div>
 
-          {/* Right Column (60% width on sm+) */}
-          <div className="w-full sm:w-[60%] flex items-center">
+          {/* Desktop/Tablet Viewport: Right Column (60% width, hidden on mobile) */}
+          <div className="hidden sm:flex w-full sm:w-[60%] flex items-center">
             {/* Tall Frame */}
             <div
               className="w-full h-full rounded-[20px] sm:rounded-[25px] bg-[#0C0C0D] border border-[#D7E2EA]/10 shadow-xl overflow-hidden flex flex-col cursor-pointer group active:scale-[0.99] transition-transform duration-200"
@@ -669,23 +705,23 @@ function FooterSection({ onContactClick }: { onContactClick: () => void }) {
     <footer className="relative w-full min-h-[100dvh] flex flex-col justify-between bg-[#000000] text-[#D7E2EA] px-6 sm:px-10 md:px-12 py-12 sm:py-16 md:py-20 overflow-hidden z-20">
       
       {/* Background Video with flowing waves (no blur and higher opacity for crisp view) */}
-      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none overflow-hidden bg-black">
         <video
           src="/varela_word.mp4"
           autoPlay
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-85 select-none"
+          className="absolute inset-0 w-full h-full object-contain opacity-85 select-none"
         />
       </div>
 
       {/* Top block: Header and Collaboration link */}
       <div className="w-full max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-end gap-6 sm:gap-10 pb-10 md:pb-12 z-10">
-        <div className="flex flex-col max-w-xl">
+        <div className="flex flex-col max-w-3xl">
           <GSAPRevealTitle
             text="¿Trabajamos juntos?"
-            className="font-extrabold uppercase leading-none tracking-tight text-[clamp(2.4rem,5.5vw,85px)] text-white"
+            className="font-extrabold uppercase leading-none tracking-tight text-[clamp(1.8rem,5.5vw,85px)] text-white"
           />
         </div>
         
@@ -704,7 +740,7 @@ function FooterSection({ onContactClick }: { onContactClick: () => void }) {
       </div>
 
       {/* Middle block: Spacer */}
-      <div className="w-full flex-grow py-12 z-10" />
+      <div className="w-full flex-grow py-4 sm:py-8 md:py-12 z-10" />
 
       {/* Bottom block: Columns for info */}
       <div className="w-full max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-6 pt-10 z-10">
