@@ -6,7 +6,6 @@ import SmoothScroller from './components/SmoothScroller'
 import FadeIn from './components/FadeIn'
 import AnimatedText from './components/AnimatedText'
 import ContactButton from './components/ContactButton'
-import LiveProjectButton from './components/LiveProjectButton'
 import TechStackSection from './components/TechStackSection'
 import GSAPRevealTitle from './components/GSAPRevealTitle'
 import CustomCursor from './components/CustomCursor'
@@ -36,6 +35,8 @@ const projects = [
     number: '01',
     category: 'Finanzas & Automatización n8n',
     title: 'Paycheck App',
+    liveUrl: 'https://paycheck.cloud/',
+    githubUrl: 'https://github.com/VarelaG/PayCheck',
     images: [
       '/projects/paycheck.png',
       '/projects/paycheck2.png',
@@ -46,6 +47,8 @@ const projects = [
     number: '02',
     category: 'Sistemas de Gestión',
     title: 'SGI Supermercado',
+    liveUrl: 'https://sgi.vyte-dev.com/',
+    githubUrl: 'https://github.com/VarelaG/Vyte-SGI',
     images: [
       '/projects/sgi.png',
       '/projects/sgi%201.png',
@@ -56,6 +59,8 @@ const projects = [
     number: '03',
     category: 'Web App / Distribución & E-Commerce',
     title: 'H2O Express',
+    liveUrl: 'https://agua-el-vaskito.vercel.app/',
+    githubUrl: 'https://github.com/VarelaG/AguaElVaskito',
     images: [
       '/projects/agua.png',
       '/projects/agua1.png',
@@ -473,13 +478,14 @@ function ProjectsSection({ onImageClick }: { onImageClick: (url: string) => void
   )
 }
 
-// Sticky Project Card Subcomponent
 function ProjectCard({
   index,
   totalCards,
   number,
   category,
   title,
+  liveUrl,
+  githubUrl,
   images,
   onImageClick
 }: {
@@ -488,6 +494,8 @@ function ProjectCard({
   number: string
   category: string
   title: string
+  liveUrl: string
+  githubUrl: string
   images: string[]
   onImageClick: (url: string) => void
 }) {
@@ -528,10 +536,6 @@ function ProjectCard({
     return () => ctx.revert();
   }, []);
 
-  const handleLiveProject = () => {
-    window.open('https://motionsites.ai', '_blank')
-  }
-
   return (
     <div
       ref={containerRef}
@@ -562,7 +566,24 @@ function ProjectCard({
               </h3>
             </div>
           </div>
-          <LiveProjectButton onClick={handleLiveProject} className="flex-shrink-0" />
+          <div className="flex gap-2 sm:gap-3 flex-shrink-0">
+            <a
+              href={liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full border border-white text-white font-medium uppercase tracking-wider transition-all duration-300 hover:bg-white/10 active:scale-[0.98] px-3.5 py-1.5 xs:px-5 xs:py-2 sm:px-6 sm:py-2.5 text-[9px] xs:text-[10px] sm:text-xs font-mono"
+            >
+              Sitio ↗
+            </a>
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full border border-white/20 text-[#D7E2EA]/85 font-medium uppercase tracking-wider transition-all duration-300 hover:border-white/55 hover:bg-white/5 active:scale-[0.98] px-3.5 py-1.5 xs:px-5 xs:py-2 sm:px-6 sm:py-2.5 text-[9px] xs:text-[10px] sm:text-xs font-mono"
+            >
+              GitHub
+            </a>
+          </div>
         </div>
 
         {/* Bottom Row: 2-Column Image Grid (Desktop/Tablet) or Single Image Mockup (Mobile) */}
