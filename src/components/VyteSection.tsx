@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
+import GSAPRevealTitle from './GSAPRevealTitle'
 
 export default function VyteSection() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -32,29 +33,30 @@ export default function VyteSection() {
     renderer.setSize(container.clientWidth, container.clientHeight)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
-    // 4. Create 3D Minimalist Geometric Box & Vertices (White/Black theme)
-    const boxGeometry = new THREE.BoxGeometry(2.2, 2.2, 2.2, 2, 2, 2)
+    // 4. Create 3D Geometric Torus Knot & Vertices (White/Black theme)
+    // TorusKnotGeometry(radius, tube, tubularSegments, radialSegments, p, q)
+    const torusGeometry = new THREE.TorusKnotGeometry(1.2, 0.38, 120, 16, 2, 3)
     
-    // Wireframe material for the box faces
+    // Wireframe material for the knot lines
     const wireframeMaterial = new THREE.MeshBasicMaterial({
       color: 0xffffff,
       wireframe: true,
       transparent: true,
-      opacity: 0.15
+      opacity: 0.16
     })
-    const boxMesh = new THREE.Mesh(boxGeometry, wireframeMaterial)
-    scene.add(boxMesh)
+    const torusMesh = new THREE.Mesh(torusGeometry, wireframeMaterial)
+    scene.add(torusMesh)
 
-    // Glow points at vertices to look like a digital node architecture
+    // Glowing points at vertices to look like an intricate architecture structure
     const pointsMaterial = new THREE.PointsMaterial({
       color: 0xffffff,
-      size: 0.08,
+      size: 0.04,
       transparent: true,
       opacity: 0.8,
       blending: THREE.AdditiveBlending
     })
-    const pointSystem = new THREE.Points(boxGeometry, pointsMaterial)
-    boxMesh.add(pointSystem)
+    const pointSystem = new THREE.Points(torusGeometry, pointsMaterial)
+    torusMesh.add(pointSystem)
 
     // 5. Mouse Interaction variables
     let mouseX = 0
@@ -70,7 +72,7 @@ export default function VyteSection() {
     }
 
     const handleMouseEnter = () => {
-      hoverSpeed = 2.8 // Rotate faster on mouse hover
+      hoverSpeed = 2.4 // Spin faster on hover
     }
 
     const handleMouseLeave = () => {
@@ -95,13 +97,13 @@ export default function VyteSection() {
       targetX += (mouseX - targetX) * 0.05
       targetY += (mouseY - targetY) * 0.05
 
-      // Base rotation combined with mouse tilt and hover speed multiplier
-      boxMesh.rotation.y = elapsedTime * 0.12 * hoverSpeed + targetX
-      boxMesh.rotation.x = elapsedTime * 0.08 * hoverSpeed + targetY
-      boxMesh.rotation.z = elapsedTime * 0.04
+      // Complex multi-axis rotation based on time, hover speed, and mouse tilt
+      torusMesh.rotation.y = elapsedTime * 0.15 * hoverSpeed + targetX
+      torusMesh.rotation.x = elapsedTime * 0.10 * hoverSpeed + targetY
+      torusMesh.rotation.z = elapsedTime * 0.05
 
-      // Gentle pulse animation on points scale
-      const pulse = 1 + Math.sin(elapsedTime * 2.5) * 0.03
+      // Subtle pulse animation on points scale
+      const pulse = 1 + Math.sin(elapsedTime * 2) * 0.025
       pointSystem.scale.set(pulse, pulse, pulse)
 
       renderer.render(scene, camera)
@@ -127,7 +129,7 @@ export default function VyteSection() {
       container.removeEventListener('mouseenter', handleMouseEnter)
       container.removeEventListener('mouseleave', handleMouseLeave)
       resizeObserver.disconnect()
-      boxGeometry.dispose()
+      torusGeometry.dispose()
       wireframeMaterial.dispose()
       pointsMaterial.dispose()
       renderer.dispose()
@@ -144,9 +146,12 @@ export default function VyteSection() {
           <span className="text-[9px] font-mono tracking-[0.25em] text-white/40 uppercase mb-3 block">
             // MI MARCA FREELANCE
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-wide text-white uppercase mb-6 font-sans">
-            Vyte
-          </h2>
+          <div className="mb-6">
+            <GSAPRevealTitle
+              text="Vyte"
+              className="hero-heading font-black uppercase text-[clamp(2.4rem,10vw,160px)] leading-none tracking-tight text-white text-left"
+            />
+          </div>
           <p className="text-[#D7E2EA]/70 font-light text-sm sm:text-base leading-relaxed mb-8 max-w-[460px]">
             **Vyte** es el emprendimiento bajo el cual desarrollo proyectos digitales de forma independiente. A través de esta marca, creo sitios corporativos, landings de conversión y aplicaciones web veloces, optimizadas y con un enfoque muy cuidado en el diseño y la interactividad.
           </p>
