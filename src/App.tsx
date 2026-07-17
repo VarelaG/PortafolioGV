@@ -625,7 +625,7 @@ function ProjectCard({
                 <img
                   src={images[0]}
                   alt={`${title} col1-top`}
-                  className="parallax-img w-full h-full object-cover object-top select-none pointer-events-none scale-105 transition-all duration-300 group-hover:scale-110 group-hover:brightness-110"
+                  className="w-full h-full object-contain bg-[#0C0C0D] select-none pointer-events-none transition-all duration-300 group-hover:scale-102 group-hover:brightness-110"
                   loading="lazy"
                 />
               </div>
@@ -651,12 +651,11 @@ function ProjectCard({
                 <div className="w-6" />
               </div>
 
-              {/* Image Viewport */}
               <div className="flex-grow overflow-hidden relative">
                 <img
                   src={images[1]}
                   alt={`${title} col1-bottom`}
-                  className="parallax-img w-full h-full object-cover object-top select-none pointer-events-none scale-105 transition-all duration-300 group-hover:scale-110 group-hover:brightness-110"
+                  className="w-full h-full object-contain bg-[#0C0C0D] select-none pointer-events-none transition-all duration-300 group-hover:scale-102 group-hover:brightness-110"
                   loading="lazy"
                 />
               </div>
@@ -684,12 +683,11 @@ function ProjectCard({
                 <div className="w-6" />
               </div>
 
-              {/* Image Viewport */}
               <div className="flex-grow overflow-hidden relative">
                 <img
                   src={images[2]}
                   alt={`${title} col2-tall`}
-                  className="parallax-img w-full h-full object-cover object-top select-none pointer-events-none scale-105 transition-all duration-300 group-hover:scale-110 group-hover:brightness-110"
+                  className="w-full h-full object-contain bg-[#0C0C0D] select-none pointer-events-none transition-all duration-300 group-hover:scale-102 group-hover:brightness-110"
                   loading="lazy"
                 />
               </div>
