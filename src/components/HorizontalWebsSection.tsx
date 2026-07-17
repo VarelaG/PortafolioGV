@@ -4,72 +4,67 @@ import GSAPRevealTitle from './GSAPRevealTitle'
 
 interface WebProject {
   title: string
-  url: string
   displayUrl: string
   image: string
-  description: string
+  description: string;
 }
 
 const webProjects: WebProject[] = [
   {
     title: 'Estudio Jurídico Legal',
-    url: 'https://github.com/VarelaG',
     displayUrl: 'estudiojuridico.varela.dev',
     image: '/webs/abogado-BfB7yUm6.webp',
     description: 'Landing page corporativa para estudio de abogados con agendamiento y diseño sobrio.'
   },
   {
     title: 'Estudio de Arquitectura',
-    url: 'https://github.com/VarelaG',
     displayUrl: 'arquitectura.varela.dev',
     image: '/webs/arquitectura-DVXecECh.webp',
     description: 'Portfolio de proyectos arquitectónicos minimalista, enfocado en fotografía de alta calidad.'
   },
   {
     title: 'Resort & Spa Luxury',
-    url: 'https://github.com/VarelaG',
     displayUrl: 'hotelspa.varela.dev',
     image: '/webs/hotel1-BAm_IPuk.webp',
     description: 'Sistema de reservas y visualización de suites exclusivas con animaciones inmersivas.'
   },
   {
     title: 'Centro de Yoga & Zen',
-    url: 'https://github.com/VarelaG',
     displayUrl: 'yoga.varela.dev',
     image: '/webs/yoga-GM2TJHnu.webp',
     description: 'Plataforma de clases online y horarios para centro de bienestar integral.'
   },
   {
     title: 'Gourmet Restaurant',
-    url: 'https://github.com/VarelaG',
     displayUrl: 'gourmet.varela.dev',
     image: '/webs/Restaurante-D921JeC_.webp',
     description: 'Menú interactivo con reservas en tiempo real y estética visual de alta gastronomía.'
   },
   {
     title: 'Boutique Hotel & Suites',
-    url: 'https://github.com/VarelaG',
     displayUrl: 'boutiquehotel.varela.dev',
     image: '/webs/hotel2-NAXx7vu3.webp',
     description: 'Sitio web optimizado para hotel boutique urbano con integración de pagos.'
   },
   {
     title: 'E-Commerce de Moda',
-    url: 'https://github.com/VarelaG',
     displayUrl: 'moda.varela.dev',
     image: '/webs/moda-Bah87Ebo.webp',
     description: 'Tienda en línea responsiva con carrito de compras y pasarela de pago optimizada.'
   },
   {
     title: 'Refugio de Montaña',
-    url: 'https://github.com/VarelaG',
     displayUrl: 'refugio.varela.dev',
     image: '/webs/refugio-NOX9Prf6.webp',
     description: 'Portal de reservas para cabañas de montaña con mapa interactivo y clima en vivo.'
   }
 ]
 
-export default function HorizontalWebsSection() {
+interface HorizontalWebsSectionProps {
+  onImageClick: (url: string) => void
+}
+
+export default function HorizontalWebsSection({ onImageClick }: HorizontalWebsSectionProps) {
   const containerRef = useRef<HTMLDivElement>(null)
 
   // Track scroll position on desktop container
@@ -82,10 +77,6 @@ export default function HorizontalWebsSection() {
   // total items: 1 intro slide + 8 cards = 9 panels
   // We translate from 0 to -80% to give room for the last item to be fully visible
   const x = useTransform(scrollYProgress, [0, 1], ['0%', '-80%'])
-
-  const handleCardClick = (url: string) => {
-    window.open(url, '_blank', 'noopener,noreferrer')
-  }
 
   return (
     <div ref={containerRef} className="relative w-full h-[400vh] bg-[#0C0C0C] z-30 hidden md:block">
@@ -125,7 +116,7 @@ export default function HorizontalWebsSection() {
               <div
                 className="w-full rounded-[20px] lg:rounded-[25px] border border-[#D7E2EA]/10 bg-[#0C0C0D] shadow-2xl overflow-hidden flex flex-col cursor-pointer group active:scale-[0.99] transition-transform duration-300"
                 style={{ aspectRatio: '16/10' }}
-                onClick={() => handleCardClick(project.url)}
+                onClick={() => onImageClick(project.image)}
                 data-cursor="view"
               >
                 {/* macOS Browser Header */}
@@ -178,11 +169,7 @@ export default function HorizontalWebsSection() {
 }
 
 // Mobile variant that renders a normal horizontal swipe block instead of sticky scrolljacking
-export function HorizontalWebsMobileSection() {
-  const handleCardClick = (url: string) => {
-    window.open(url, '_blank', 'noopener,noreferrer')
-  }
-
+export function HorizontalWebsMobileSection({ onImageClick }: HorizontalWebsSectionProps) {
   return (
     <section className="relative w-full bg-[#0C0C0C] py-20 px-5 block md:hidden z-30">
       <div className="flex flex-col mb-10">
@@ -204,7 +191,7 @@ export function HorizontalWebsMobileSection() {
           <div 
             key={idx} 
             className="w-[82vw] shrink-0 snap-center flex flex-col"
-            onClick={() => handleCardClick(project.url)}
+            onClick={() => onImageClick(project.image)}
           >
             {/* macOS Browser Mockup */}
             <div

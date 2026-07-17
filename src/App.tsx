@@ -94,8 +94,8 @@ export default function App() {
         <ProjectsSection onImageClick={setSelectedImage} />
 
         {/* 6. HORIZONTAL WEBS SECTION */}
-        <HorizontalWebsSection />
-        <HorizontalWebsMobileSection />
+        <HorizontalWebsSection onImageClick={setSelectedImage} />
+        <HorizontalWebsMobileSection onImageClick={setSelectedImage} />
 
         {/* 6. TECH STACK 3D CAROUSEL SECTION */}
         <TechStackSection />
