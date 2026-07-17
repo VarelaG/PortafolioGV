@@ -57,11 +57,11 @@ export default function Hero() {
           <span className="header-time">{time}</span>
         </div>
         <div className="header-center">
-          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://www.linkedin.com/in/gonzalo-varela-4a0b00291/?skipRedirect=true" target="_blank" rel="noopener noreferrer">LinkedIn</a>
           <span>/</span>
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://github.com/VarelaG" target="_blank" rel="noopener noreferrer">GitHub</a>
           <span>/</span>
-          <a href="mailto:gonzalo@varela.com">Email</a>
+          <a href="mailto:varelag1999@gmail.com">Email</a>
         </div>
         <div className="header-right">
           <a href="#contacto" className="header-cta">Hablemos ↗</a>

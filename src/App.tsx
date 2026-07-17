@@ -68,7 +68,7 @@ export default function App() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
 
   const handleContact = () => {
-    window.location.href = 'mailto:gonzalo.varela@example.com?subject=Hola%20Gonzalo!'
+    window.location.href = 'mailto:varelag1999@gmail.com?subject=Hola%20Gonzalo!'
   }
 
   return (
@@ -755,14 +755,19 @@ function FooterSection({ onContactClick }: { onContactClick: () => void }) {
           </span>
           <div className="flex flex-col gap-1 mt-1">
             <a 
-              href="mailto:gonzalo.varela@example.com?subject=Proyecto%20Portafolio" 
+              href="mailto:varelag1999@gmail.com?subject=Proyecto%20Portafolio" 
               className="text-xs sm:text-sm font-medium text-white hover:text-white/70 transition-colors w-max"
             >
-              E. gonzalo.varela@example.com
+              E. varelag1999@gmail.com
             </a>
-            <span className="text-xs sm:text-sm font-light text-[#D7E2EA]/50 select-none">
-              P. +54 9 11 3456-7890
-            </span>
+            <a 
+              href="https://wa.me/5492364263654"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs sm:text-sm font-light text-[#D7E2EA]/50 hover:text-white transition-colors w-max"
+            >
+              P. +54 9 236 426-3654
+            </a>
           </div>
         </div>
 
@@ -773,10 +778,8 @@ function FooterSection({ onContactClick }: { onContactClick: () => void }) {
           </span>
           <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 mt-1 max-w-[220px]">
             {[
-              { label: 'LinkedIn', url: 'https://linkedin.com' },
-              { label: 'GitHub', url: 'https://github.com' },
-              { label: 'Twitter (X)', url: 'https://twitter.com' },
-              { label: 'Instagram', url: 'https://instagram.com' }
+              { label: 'LinkedIn', url: 'https://www.linkedin.com/in/gonzalo-varela-4a0b00291/?skipRedirect=true' },
+              { label: 'GitHub', url: 'https://github.com/VarelaG' }
             ].map((link) => (
               <a
                 key={link.label}
