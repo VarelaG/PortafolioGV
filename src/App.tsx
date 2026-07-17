@@ -11,6 +11,7 @@ import TechStackSection from './components/TechStackSection'
 import GSAPRevealTitle from './components/GSAPRevealTitle'
 import CustomCursor from './components/CustomCursor'
 import HorizontalWebsSection, { HorizontalWebsMobileSection } from './components/HorizontalWebsSection'
+import VyteSection from './components/VyteSection'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -97,7 +98,10 @@ export default function App() {
         <HorizontalWebsSection onImageClick={setSelectedImage} />
         <HorizontalWebsMobileSection onImageClick={setSelectedImage} />
 
-        {/* 6. TECH STACK 3D CAROUSEL SECTION */}
+        {/* 7. VYTE STUDIO SECTION WITH 3D CANVAS */}
+        <VyteSection />
+
+        {/* 8. TECH STACK 3D CAROUSEL SECTION */}
         <TechStackSection />
 
         {/* 7. FOOTER SECTION */}
