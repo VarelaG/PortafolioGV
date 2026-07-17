@@ -348,10 +348,9 @@ function AboutSection({ onContactClick }: { onContactClick: () => void }) {
 
       {/* Main Content Box */}
       <div className="flex flex-col items-center justify-center text-center max-w-[900px] z-10">
-        <GSAPRevealTitle
-          text="Sobre Mí"
-          className="hero-heading font-black uppercase leading-none tracking-tight text-[clamp(2.4rem,10vw,160px)]"
-        />
+        <h2 className="hero-heading font-black uppercase leading-none tracking-tight text-[clamp(2.4rem,10vw,160px)] text-white">
+          Sobre Mí
+        </h2>
 
         {/* Gap 10/14/16 between heading and text */}
         <div className="h-10 sm:h-14 md:h-16" />
