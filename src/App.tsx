@@ -11,6 +11,7 @@ import GSAPRevealTitle from './components/GSAPRevealTitle'
 import CustomCursor from './components/CustomCursor'
 import HorizontalWebsSection, { HorizontalWebsMobileSection } from './components/HorizontalWebsSection'
 import VyteSection from './components/VyteSection'
+import Preloader from './components/Preloader'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -72,20 +73,31 @@ const projects = [
 export default function App() {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [startHeroAnim, setStartHeroAnim] = useState(false)
 
   const handleContact = () => {
     window.location.href = 'mailto:varelag1999@gmail.com?subject=Hola%20Gonzalo!'
   }
 
+  const handlePreloaderComplete = () => {
+    setIsLoading(false)
+    setStartHeroAnim(true)
+  }
+
   return (
     <SmoothScroller>
+      <Preloader onComplete={handlePreloaderComplete} />
       <CustomCursor />
-      <div ref={scrollRef} className="relative w-full text-[#D7E2EA] bg-[#0C0C0C] overflow-x-clip">
+      <div 
+        ref={scrollRef} 
+        className={`relative w-full text-[#D7E2EA] bg-[#0C0C0C] ${isLoading ? 'h-screen overflow-hidden pointer-events-none' : 'overflow-x-clip'}`}
+      >
         {/* Decorative Grid Mesh glows for visual premium feel */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-950/10 via-background to-background pointer-events-none z-0" />
 
         {/* 1. HERO SECTION */}
-        <HeroSection onContactClick={handleContact} />
+        <HeroSection onContactClick={handleContact} startAnimation={startHeroAnim} />
 
         {/* 2. MARQUEE SECTION */}
         <MarqueeSection onImageClick={setSelectedImage} />
@@ -126,7 +138,7 @@ export default function App() {
 // ------------------------------
 // HERO SECTION COMPONENT
 // ------------------------------
-function HeroSection({ onContactClick }: { onContactClick: () => void }) {
+function HeroSection({ onContactClick, startAnimation }: { onContactClick: () => void; startAnimation: boolean }) {
   const [activeLink, setActiveLink] = useState('')
 
   const handleNavClick = (sectionId: string) => {
@@ -171,7 +183,7 @@ function HeroSection({ onContactClick }: { onContactClick: () => void }) {
       className="relative w-full min-h-[100dvh] flex flex-col justify-between overflow-hidden z-10 bg-[#0C0C0C] text-[#D7E2EA]"
     >
       {/* Floating Island Navigation Bar */}
-      <div className="fixed top-6 left-1/2 -translate-x-1/2 w-max max-w-[92vw] px-5 sm:px-6 py-2.5 rounded-full bg-[#0C0C0C]/35 backdrop-blur-md border border-[#D7E2EA]/10 flex items-center justify-center gap-5 sm:gap-7 z-50 shadow-2xl shadow-black/40">
+      <div className={`fixed top-6 left-1/2 -translate-x-1/2 w-max max-w-[92vw] px-5 sm:px-6 py-2.5 rounded-full bg-[#0C0C0C]/35 backdrop-blur-md border border-[#D7E2EA]/10 flex items-center justify-center gap-5 sm:gap-7 z-50 shadow-2xl shadow-black/40 transition-all duration-[1200ms] ease-out ${startAnimation ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-6 pointer-events-none'}`}>
         {[
           { label: 'Sobre Mí', id: 'about' },
           { label: 'Servicios', id: 'services' },
@@ -198,7 +210,7 @@ function HeroSection({ onContactClick }: { onContactClick: () => void }) {
       {/* Dynamic Background Parallax Wrapper */}
       <motion.div 
         style={{ x: bgX, y: bgY, scale: 1.08 }}
-        className="absolute inset-0 w-full h-full z-0 pointer-events-none"
+        className={`absolute inset-0 w-full h-full z-0 pointer-events-none transition-opacity duration-[1800ms] ease-out ${startAnimation ? 'opacity-100' : 'opacity-0'}`}
       >
         {/* Background Video */}
         <video
@@ -225,19 +237,19 @@ function HeroSection({ onContactClick }: { onContactClick: () => void }) {
       {/* Bottom Bar: Asymmetric Layout */}
       <div className="w-full flex justify-between items-end px-6 md:px-10 pb-8 sm:pb-10 md:pb-12 z-20">
         {/* Left Editorial tagline */}
-        <FadeIn delay={0.3} y={20}>
+        <div className={`transition-all duration-[1400ms] ease-out ${startAnimation ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`} style={{ transitionDelay: '300ms' }}>
           <p 
             className="text-[#D7E2EA]/85 font-light uppercase tracking-wide leading-relaxed text-left max-w-[200px] sm:max-w-[260px] md:max-w-[320px] border-l-2 border-[#D7E2EA]/15 pl-4"
             style={{ fontSize: 'clamp(0.75rem, 1.3vw, 1.15rem)' }}
           >
             analista en sistemas y 91% licenciado en sistemas, enfocado en diseñar soluciones de software de alto rendimiento
           </p>
-        </FadeIn>
+        </div>
 
         {/* Right Dynamic Magnetic Contact Button */}
-        <FadeIn delay={0.45} y={20}>
+        <div className={`transition-all duration-[1400ms] ease-out ${startAnimation ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`} style={{ transitionDelay: '450ms' }}>
           <ContactButton onClick={onContactClick} />
-        </FadeIn>
+        </div>
       </div>
     </section>
   )

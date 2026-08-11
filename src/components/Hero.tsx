@@ -8,7 +8,12 @@ import gonzaloImg from '../assets/gonzalo.png'
 
 gsap.registerPlugin(ScrollTrigger)
 
-export default function Hero() {
+interface HeroProps {
+  onContactClick: () => void
+  startAnimation: boolean
+}
+
+export default function Hero({ onContactClick, startAnimation }: HeroProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const portraitRef = useRef<HTMLImageElement>(null)
   const [time, setTime] = useState('')
@@ -50,7 +55,7 @@ export default function Hero() {
   return (
     <section ref={containerRef} className="hero-container">
       {/* 1. Header Navigation Bar (Buenos Aires clock, Socials, CTA) */}
-      <header className="hero-header">
+      <header className={`hero-header transition-all duration-[1200ms] cubic-bezier(0.16, 1, 0.3, 1) ${startAnimation ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-6'}`}>
         <div className="header-left">
           <span>Buenos Aires, AR</span>
           <span className="header-time-separator">•</span>
@@ -64,7 +69,7 @@ export default function Hero() {
           <a href="mailto:varelag1999@gmail.com">Email</a>
         </div>
         <div className="header-right">
-          <a href="#contacto" className="header-cta">Hablemos ↗</a>
+          <a href="#contacto" className="header-cta" onClick={(e) => { e.preventDefault(); onContactClick(); }}>Hablemos ↗</a>
         </div>
       </header>
 
@@ -73,7 +78,7 @@ export default function Hero() {
         ref={portraitRef}
         src={gonzaloImg}
         alt="Gonzalo Varela portrait"
-        className="hero-background-portrait"
+        className={`hero-background-portrait transition-all duration-[1800ms] cubic-bezier(0.16, 1, 0.3, 1) ${startAnimation ? 'opacity-30 scale-100 saturate-100' : 'opacity-0 scale-[1.08] saturate-50'}`}
       />
 
       {/* Dark gradient overlay */}
@@ -81,9 +86,9 @@ export default function Hero() {
 
       <div className="hero-content">
         <motion.h1
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] as const }}
+          initial={{ opacity: 0, y: 70 }}
+          animate={startAnimation ? { opacity: 1, y: 0 } : { opacity: 0, y: 70 }}
+          transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
           className="hero-title"
         >
           GONZALO
@@ -91,9 +96,9 @@ export default function Hero() {
           VARELA
         </motion.h1>
         <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.4, delay: 0.2, ease: [0.16, 1, 0.3, 1] as const }}
+          initial={{ opacity: 0, y: 40 }}
+          animate={startAnimation ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+          transition={{ duration: 1.4, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           className="hero-subtitle"
         >
           Licenciado en Sistemas
@@ -101,9 +106,9 @@ export default function Hero() {
 
         {/* 2. Technical Sidebar (Specialties block under title) */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] as const }}
+          initial={{ opacity: 0, y: 40 }}
+          animate={startAnimation ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+          transition={{ duration: 1.4, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
           className="hero-technical-sidebar"
         >
           <div className="sidebar-item">
@@ -122,7 +127,7 @@ export default function Hero() {
       </div>
 
       {/* 3. Scroll Down Indicator (Bottom Left) */}
-      <div className="hero-scroll-indicator">
+      <div className={`hero-scroll-indicator transition-opacity duration-1000 ${startAnimation ? 'opacity-100' : 'opacity-0'}`}>
         <span className="scroll-text">Deslizar</span>
         <div className="scroll-line-container">
           <motion.div
@@ -134,7 +139,7 @@ export default function Hero() {
       </div>
 
       {/* 4. Context Tagline (Bottom Right) */}
-      <div className="hero-context-tagline">
+      <div className={`hero-context-tagline transition-all duration-[1400ms] ${startAnimation ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         <p>
           Especialista en estructurar arquitecturas estables e interfaces fluidas de alto rendimiento.
         </p>
