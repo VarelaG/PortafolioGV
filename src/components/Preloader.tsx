@@ -5,59 +5,50 @@ interface PreloaderProps {
   onComplete: () => void
 }
 
+const WORDS = ['DISEÑO', 'CÓDIGO', 'SISTEMAS', 'INTERACCIÓN', 'VYTE']
+
 export default function Preloader({ onComplete }: PreloaderProps) {
   const [progress, setProgress] = useState(0)
-  const [loadingText, setLoadingText] = useState('INITIALIZING')
+  const [wordIndex, setWordIndex] = useState(0)
   const [isDone, setIsDone] = useState(false)
 
-  // Progress simulation with variable speeds
+  // Fast Progress & Word Rotation Simulation (Total duration ~1.5s)
   useEffect(() => {
+    // 1. Word Index Rotation
+    const wordInterval = setInterval(() => {
+      setWordIndex((prev) => {
+        if (prev < WORDS.length - 1) {
+          return prev + 1
+        }
+        return prev
+      })
+    }, 280) // Rotate word every 280ms
+
+    // 2. Progress Counter Simulation (0 to 100)
     let currentProgress = 0
-    let timer: any
-
-    const updateProgress = () => {
-      if (currentProgress >= 100) {
-        setProgress(100)
-        setLoadingText('READY')
-        setTimeout(() => {
-          setIsDone(true)
-          setTimeout(onComplete, 800) // Delay to let the curtain slide up completely
-        }, 500)
-        return
-      }
-
-      // Variable increment steps to feel organic
-      let increment = 1
-      if (currentProgress < 30) {
-        increment = Math.floor(Math.random() * 8) + 4 // Fast at start
-      } else if (currentProgress < 75) {
-        increment = Math.floor(Math.random() * 4) + 1 // Normal speed
-      } else {
-        increment = Math.floor(Math.random() * 2) + 1 // Slower at final stage
-      }
-
+    const progressInterval = setInterval(() => {
+      // Fast exponential-like steps
+      const increment = Math.floor(Math.random() * 8) + 6
       currentProgress = Math.min(currentProgress + increment, 100)
       setProgress(currentProgress)
 
-      // Set technical text updates
-      if (currentProgress < 25) {
-        setLoadingText('INITIALIZING SYSTEMS')
-      } else if (currentProgress < 50) {
-        setLoadingText('COMPILING 3D CORE')
-      } else if (currentProgress < 75) {
-        setLoadingText('OPTIMIZING PORTFOLIO ASSETS')
-      } else if (currentProgress < 98) {
-        setLoadingText('ESTABLISHING PIPELINES')
+      if (currentProgress >= 100) {
+        clearInterval(progressInterval)
+        clearInterval(wordInterval)
+        setWordIndex(WORDS.length - 1) // Ensure it lands on VYTE
+        
+        // Final transition trigger after landing on the last word
+        setTimeout(() => {
+          setIsDone(true)
+          setTimeout(onComplete, 800) // Delay to let curtain slide up completely
+        }, 350)
       }
+    }, 90)
 
-      // Variable interval duration
-      const nextDelay = currentProgress < 30 ? 60 : currentProgress < 75 ? 120 : 180
-      timer = setTimeout(updateProgress, nextDelay)
+    return () => {
+      clearInterval(progressInterval)
+      clearInterval(wordInterval)
     }
-
-    timer = setTimeout(updateProgress, 100)
-
-    return () => clearTimeout(timer)
   }, [onComplete])
 
   return (
@@ -68,40 +59,53 @@ export default function Preloader({ onComplete }: PreloaderProps) {
           exit={{ 
             y: '-100%',
             transition: { 
-              duration: 1.1, 
-              ease: [0.76, 0, 0.24, 1] // Awwwards custom cubic-bezier
+              duration: 0.95, 
+              ease: [0.76, 0, 0.24, 1] // Cinematic Awwwards cubic-bezier
             }
           }}
           className="fixed inset-0 w-full h-screen bg-[#09090b] text-white flex flex-col justify-between p-8 sm:p-12 z-[9999] overflow-hidden select-none pointer-events-auto"
         >
           {/* Top header details */}
-          <div className="flex justify-between items-start font-mono text-[9px] sm:text-xs text-white/35 tracking-widest uppercase">
+          <div className="flex justify-between items-start font-mono text-[9px] sm:text-xs text-white/30 tracking-widest uppercase">
             <div>GONZALO VARELA</div>
-            <div>PORTFOLIO 2026 // ED. 08</div>
+            <div>DEVELOPMENT PORTFOLIO</div>
           </div>
 
-          {/* Central progress view */}
-          <div className="flex flex-col items-center justify-center text-center">
-            {/* Massive progressive percentage */}
-            <h1 className="text-[clamp(4.5rem,14vw,200px)] font-black leading-none tracking-tighter text-white font-sans select-none tabular-nums">
-              {progress}%
-            </h1>
-            {/* Underline pulse indicator */}
-            <div className="w-[120px] h-[1px] bg-white/10 mt-6 relative overflow-hidden">
-              <motion.div 
-                className="absolute left-0 top-0 bottom-0 bg-white"
-                style={{ width: `${progress}%` }}
-              />
+          {/* Central concept text morphing */}
+          <div className="flex items-center justify-center flex-grow">
+            <div className="h-[75px] sm:h-[120px] overflow-hidden relative flex items-center justify-center">
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={wordIndex}
+                  initial={{ y: '100%', opacity: 0 }}
+                  animate={{ y: '0%', opacity: 1 }}
+                  exit={{ y: '-100%', opacity: 0 }}
+                  transition={{ 
+                    duration: 0.28, 
+                    ease: [0.215, 0.61, 0.355, 1] 
+                  }}
+                  className="block text-[clamp(2.2rem,8vw,96px)] font-bold tracking-widest text-white font-sans text-center uppercase"
+                >
+                  {WORDS[wordIndex]}
+                </motion.span>
+              </AnimatePresence>
             </div>
           </div>
 
-          {/* Bottom status details */}
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 font-mono text-[9px] sm:text-xs text-white/35 tracking-widest uppercase border-t border-white/5 pt-6">
+          {/* Bottom status & small corner counter */}
+          <div className="flex justify-between items-end font-mono text-[9px] sm:text-xs text-white/30 tracking-widest uppercase border-t border-white/5 pt-6 select-none">
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-              <span>{loadingText}</span>
+              <span>CARGANDO RECURSOS</span>
             </div>
-            <div>© {new Date().getFullYear()} ALL RIGHTS RESERVED</div>
+            
+            {/* Small sophisticated counter on the right corner */}
+            <div className="flex items-center gap-3 font-semibold text-white/50 text-[10px] sm:text-sm tabular-nums">
+              <span>PROGRESS</span>
+              <span className="text-white font-bold w-[45px] text-right">
+                {progress < 10 ? `00${progress}` : progress < 100 ? `0${progress}` : progress}%
+              </span>
+            </div>
           </div>
         </motion.div>
       )}
