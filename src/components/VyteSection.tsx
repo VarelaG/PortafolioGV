@@ -22,7 +22,8 @@ export default function VyteSection() {
       0.1,
       100
     )
-    camera.position.z = 7
+    camera.position.set(0, 3.2, 5.5)
+    camera.lookAt(0, 0, 0)
 
     // 3. Renderer Setup
     const renderer = new THREE.WebGLRenderer({
@@ -33,56 +34,63 @@ export default function VyteSection() {
     renderer.setSize(container.clientWidth, container.clientHeight)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
-    // 4. Create 3D Geometric Torus Knot & Vertices (White/Black theme)
-    // TorusKnotGeometry(radius, tube, tubularSegments, radialSegments, p, q)
-    const torusGeometry = new THREE.TorusKnotGeometry(1.2, 0.38, 120, 16, 2, 3)
+    // 4. Create 3D Terrain Wave Grid (White/Black minimal style)
+    const size = 6.2
+    const segments = 28
+    const geometry = new THREE.PlaneGeometry(size, size, segments, segments)
     
-    // Wireframe material for the knot lines
+    // Rotate to lay flat horizontally like a grid plane in perspective
+    geometry.rotateX(-Math.PI / 2.1)
+    geometry.rotateY(-Math.PI / 16)
+
+    // Store original Z positions for animation math
+    const count = geometry.attributes.position.count
+    const originalZ = new Float32Array(count)
+    const originalPositions = geometry.attributes.position.array as Float32Array
+    
+    for (let i = 0; i < count; i++) {
+      originalZ[i] = originalPositions[i * 3 + 2] // Z axis is local height after rotation
+    }
+
+    // Wireframe material for the grid lines
     const wireframeMaterial = new THREE.MeshBasicMaterial({
       color: 0xffffff,
       wireframe: true,
       transparent: true,
-      opacity: 0.16
+      opacity: 0.08
     })
-    const torusMesh = new THREE.Mesh(torusGeometry, wireframeMaterial)
-    scene.add(torusMesh)
+    const terrainMesh = new THREE.Mesh(geometry, wireframeMaterial)
+    scene.add(terrainMesh)
 
-    // Glowing points at vertices to look like an intricate architecture structure
+    // Glowing points at vertices
     const pointsMaterial = new THREE.PointsMaterial({
       color: 0xffffff,
-      size: 0.04,
+      size: 0.038,
       transparent: true,
-      opacity: 0.8,
+      opacity: 0.65,
       blending: THREE.AdditiveBlending
     })
-    const pointSystem = new THREE.Points(torusGeometry, pointsMaterial)
-    torusMesh.add(pointSystem)
+    const pointSystem = new THREE.Points(geometry, pointsMaterial)
+    terrainMesh.add(pointSystem)
 
     // 5. Mouse Interaction variables
     let mouseX = 0
     let mouseY = 0
     let targetX = 0
     let targetY = 0
-    let hoverSpeed = 1
 
     const handleMouseMove = (event: MouseEvent) => {
       const rect = container.getBoundingClientRect()
-      mouseX = (event.clientX - rect.left - rect.width / 2) / 120
-      mouseY = (event.clientY - rect.top - rect.height / 2) / 120
-    }
-
-    const handleMouseEnter = () => {
-      hoverSpeed = 2.4 // Spin faster on hover
+      mouseX = (event.clientX - rect.left - rect.width / 2) / 200
+      mouseY = (event.clientY - rect.top - rect.height / 2) / 200
     }
 
     const handleMouseLeave = () => {
-      hoverSpeed = 1
       mouseX = 0
       mouseY = 0
     }
 
     window.addEventListener('mousemove', handleMouseMove)
-    container.addEventListener('mouseenter', handleMouseEnter)
     container.addEventListener('mouseleave', handleMouseLeave)
 
     // 6. Animation Loop
@@ -92,19 +100,34 @@ export default function VyteSection() {
       requestAnimationFrame(animate)
 
       const elapsedTime = clock.getElapsedTime()
+      const posAttribute = geometry.getAttribute('position') as THREE.BufferAttribute
+      const posArray = posAttribute.array as Float32Array
 
-      // Smooth lerp for mouse movements
+      // Smooth lerp mouse target
       targetX += (mouseX - targetX) * 0.05
       targetY += (mouseY - targetY) * 0.05
 
-      // Complex multi-axis rotation based on time, hover speed, and mouse tilt
-      torusMesh.rotation.y = elapsedTime * 0.15 * hoverSpeed + targetX
-      torusMesh.rotation.x = elapsedTime * 0.10 * hoverSpeed + targetY
-      torusMesh.rotation.z = elapsedTime * 0.05
+      for (let i = 0; i < count; i++) {
+        const xIdx = i * 3
+        const yIdx = i * 3 + 1
+        const zIdx = i * 3 + 2
 
-      // Subtle pulse animation on points scale
-      const pulse = 1 + Math.sin(elapsedTime * 2) * 0.025
-      pointSystem.scale.set(pulse, pulse, pulse)
+        const x = originalPositions[xIdx]
+        const y = originalPositions[yIdx]
+
+        // Math wave formula (Sine combination based on distance to simulate ripple)
+        const distance = Math.sqrt(x * x + y * y)
+        const wave = Math.sin(distance * 1.8 - elapsedTime * 1.6) * 0.22
+        const secondaryWave = Math.cos(x * 1.2 + elapsedTime * 1.2) * 0.08
+
+        // Local displacement
+        posArray[zIdx] = originalZ[i] + wave + secondaryWave
+      }
+      posAttribute.needsUpdate = true
+
+      // Move grid based on mouse tilt
+      terrainMesh.rotation.z = elapsedTime * 0.02 + targetX * 0.3
+      terrainMesh.rotation.x = -Math.PI / 2.3 + targetY * 0.2
 
       renderer.render(scene, camera)
     }
@@ -126,10 +149,9 @@ export default function VyteSection() {
     // Cleanup
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
-      container.removeEventListener('mouseenter', handleMouseEnter)
       container.removeEventListener('mouseleave', handleMouseLeave)
       resizeObserver.disconnect()
-      torusGeometry.dispose()
+      geometry.dispose()
       wireframeMaterial.dispose()
       pointsMaterial.dispose()
       renderer.dispose()
@@ -137,67 +159,89 @@ export default function VyteSection() {
   }, [])
 
   return (
-    <section className="relative w-full bg-[#000000] text-white py-20 sm:py-28 px-6 overflow-hidden z-20 border-b border-white/5">
+    <section className="relative w-full bg-[#000000] text-white py-24 sm:py-32 px-6 overflow-hidden z-20 border-b border-white/5">
       
-      <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center relative z-10">
+      <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-20 items-center relative z-10">
         
-        {/* Left Column: Branding & Copy (Minimal & honest freelancer tone) */}
+        {/* Left Column: Editorial & Info cards (Awwwards-style layout) */}
         <div className="flex flex-col text-left">
-          <span className="text-[9px] font-mono tracking-[0.25em] text-white/40 uppercase mb-3 block">
-            // MI MARCA FREELANCE
+          <span className="text-[9px] font-mono tracking-[0.25em] text-white/30 uppercase mb-3 block pl-4">
+            [02 // INICIATIVA DIGITAL]
           </span>
-          <div className="mb-6">
+          <div className="mb-6 pl-4">
             <GSAPRevealTitle
               text="Vyte"
               className="hero-heading font-black uppercase text-[clamp(2.4rem,10vw,160px)] leading-none tracking-tight text-white text-left"
             />
           </div>
-          <p className="text-[#D7E2EA]/70 font-light text-sm sm:text-base leading-relaxed mb-8 max-w-[460px]">
-            **Vyte** es el emprendimiento bajo el cual desarrollo proyectos digitales de forma independiente. A través de esta marca, creo sitios corporativos, landings de conversión y aplicaciones web veloces, optimizadas y con un enfoque muy cuidado en el diseño y la interactividad.
+          <p className="text-white/60 font-light text-sm sm:text-base leading-relaxed mb-10 max-w-[460px] pl-4">
+            **Vyte** es mi marca de desarrollo independiente. A través de ella, transformo requisitos complejos en landings de conversión y plataformas web rápidas, optimizadas y con un enfoque muy riguroso en la <strong className="font-semibold text-white">calidad de código</strong> y la <strong className="font-semibold text-white">experiencia interactiva</strong>.
           </p>
 
-          {/* Minimal specs board */}
-          <div className="grid grid-cols-3 gap-4 border-t border-b border-white/10 py-6 mb-8 max-w-[460px] font-mono">
-            <div className="flex flex-col gap-1">
-              <span className="text-white text-xs sm:text-sm font-bold">99+</span>
-              <span className="text-[8px] text-white/40 uppercase tracking-wider">Performance</span>
-            </div>
-            <div className="flex flex-col gap-1">
-              <span className="text-white text-xs sm:text-sm font-bold">SEO</span>
-              <span className="text-[8px] text-white/40 uppercase tracking-wider">Optimizado</span>
-            </div>
-            <div className="flex flex-col gap-1">
-              <span className="text-white text-xs sm:text-sm font-bold">Clean</span>
-              <span className="text-[8px] text-white/40 uppercase tracking-wider">Código</span>
-            </div>
+          {/* Cards metrics instead of simple table */}
+          <div className="flex flex-col gap-4 mb-10 max-w-[460px]">
+            {[
+              {
+                metric: '99+',
+                title: 'PERFORMANCE',
+                desc: 'Arquitectura optimizada para tiempos de carga y respuesta inmediatos (Core Web Vitals).'
+              },
+              {
+                metric: 'SEO',
+                title: 'OPTIMIZADO',
+                desc: 'Estructuración semántica rigurosa y meta-etiquetado limpio para máxima visibilidad.'
+              },
+              {
+                metric: 'CLEAN',
+                title: 'CÓDIGO',
+                desc: 'Desarrollo escalable, tipado con TypeScript y mantenible a largo plazo.'
+              }
+            ].map((spec, i) => (
+              <div 
+                key={i} 
+                className="flex items-center gap-6 p-4 rounded-xl border border-white/5 bg-zinc-950/20 hover:bg-zinc-950/60 hover:border-white/15 transition-all duration-300 group"
+              >
+                <span className="text-sm font-mono font-bold text-white/40 group-hover:text-white transition-colors min-w-[32px]">
+                  {spec.metric}
+                </span>
+                <div className="flex flex-col gap-0.5 text-left border-l border-white/10 pl-6">
+                  <span className="text-[9px] font-mono tracking-widest text-white/35 group-hover:text-white/60 transition-colors uppercase">
+                    {spec.title}
+                  </span>
+                  <span className="text-[11px] text-white/50 leading-relaxed font-light">
+                    {spec.desc}
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
 
-          {/* Call to action */}
-          <a
-            href="https://vyte-dev.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative w-max px-8 py-3 rounded-full overflow-hidden border border-white/20 bg-white/5 text-white font-medium text-xs uppercase tracking-widest transition-all duration-300 hover:border-white/80 hover:bg-white/10 active:scale-[0.98]"
-          >
-            <span className="relative z-10 flex items-center gap-2">
-              Ver vyte-dev.com <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-            </span>
-          </a>
+          {/* Call to action (Awwwards-style fill animation) */}
+          <div className="pl-4">
+            <a
+              href="https://vyte-dev.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative inline-block px-8 py-3.5 rounded-full overflow-hidden border border-white/20 hover:border-white bg-transparent text-white font-medium text-xs uppercase tracking-widest transition-all duration-[400ms] hover:text-[#0C0C0C] active:scale-[0.97]"
+            >
+              <div className="absolute inset-0 bg-white translate-y-[102%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] pointer-events-none rounded-full" />
+              <span className="relative z-10 flex items-center gap-2 font-semibold">
+                Ver vyte-dev.com <span className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
+              </span>
+            </a>
+          </div>
         </div>
 
-        {/* Right Column: Interactive 3D Canvas Container */}
+        {/* Right Column: Inmersive 3D Wave Terrain Canvas (floating freely, no container borders) */}
         <div 
           ref={containerRef}
-          className="relative w-full aspect-square md:h-[400px] rounded-2xl bg-zinc-950/40 border border-white/5 overflow-hidden flex items-center justify-center cursor-grab active:cursor-grabbing group shadow-2xl"
+          className="relative w-full aspect-square md:h-[480px] overflow-hidden flex items-center justify-center cursor-grab active:cursor-grabbing group z-10"
         >
-          {/* Subtle grid border background */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:40px_40px]" />
-          
           {/* Three.js canvas element */}
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block z-10 pointer-events-none" />
 
-          {/* Hologram scanline overlay */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.01)_50%,transparent_50%)] bg-[size:100%_4px] pointer-events-none z-20 opacity-30" />
+          {/* Hologram scanline overlay for digital terrain feel */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.008)_50%,transparent_50%)] bg-[size:100%_4px] pointer-events-none z-20 opacity-30" />
         </div>
 
       </div>
