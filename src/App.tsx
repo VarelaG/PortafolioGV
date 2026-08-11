@@ -192,8 +192,8 @@ function HeroSection({ onContactClick, startAnimation }: { onContactClick: () =>
           <button
             key={item.id}
             onClick={() => handleNavClick(item.id)}
-            className={`text-[#D7E2EA] font-semibold uppercase tracking-wider text-[10px] sm:text-xs transition-all duration-200 hover:opacity-100 cursor-pointer ${
-              activeLink === item.id ? 'opacity-100 scale-105 border-b border-[#D7E2EA]/45 pb-0.5' : 'opacity-65'
+            className={`text-[#D7E2EA] font-semibold uppercase tracking-wider text-[10px] sm:text-xs transition-all duration-300 hover:opacity-100 hover:scale-105 active:scale-95 cursor-pointer ${
+              activeLink === item.id ? 'opacity-100 border-b border-[#D7E2EA]/45 pb-0.5' : 'opacity-65'
             }`}
           >
             {item.label}
@@ -201,7 +201,7 @@ function HeroSection({ onContactClick, startAnimation }: { onContactClick: () =>
         ))}
         <button
           onClick={onContactClick}
-          className="text-[#D7E2EA] font-semibold uppercase tracking-wider text-[10px] sm:text-xs opacity-65 transition-all duration-200 hover:opacity-100 cursor-pointer hover:scale-105"
+          className="text-[#D7E2EA] font-semibold uppercase tracking-wider text-[10px] sm:text-xs opacity-65 transition-all duration-300 hover:opacity-100 hover:scale-105 active:scale-95 cursor-pointer"
         >
           Contacto
         </button>
@@ -236,13 +236,16 @@ function HeroSection({ onContactClick, startAnimation }: { onContactClick: () =>
 
       {/* Bottom Bar: Asymmetric Layout */}
       <div className="w-full flex justify-between items-end px-6 md:px-10 pb-8 sm:pb-10 md:pb-12 z-20">
-        {/* Left Editorial tagline */}
-        <div className={`transition-all duration-[1400ms] ease-out ${startAnimation ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`} style={{ transitionDelay: '300ms' }}>
+        {/* Left Editorial tagline (Sophisticated structure: low-opacity, highlight keywords) */}
+        <div className={`flex flex-col gap-2 transition-all duration-[1400ms] ease-out ${startAnimation ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`} style={{ transitionDelay: '300ms' }}>
+          <span className="text-[8px] sm:text-[10px] font-mono tracking-[0.25em] text-white/35 uppercase text-left pl-4">
+            [01 // PERFIL INTERACTIVO]
+          </span>
           <p 
-            className="text-[#D7E2EA]/85 font-light uppercase tracking-wide leading-relaxed text-left max-w-[200px] sm:max-w-[260px] md:max-w-[320px] border-l-2 border-[#D7E2EA]/15 pl-4"
+            className="text-white/50 font-light tracking-wide leading-relaxed text-left max-w-[220px] sm:max-w-[280px] md:max-w-[350px] border-l-2 border-white/20 pl-4"
             style={{ fontSize: 'clamp(0.75rem, 1.3vw, 1.15rem)' }}
           >
-            analista en sistemas y 91% licenciado en sistemas, enfocado en diseñar soluciones de software de alto rendimiento
+            Analista en Sistemas &amp; 91% <strong className="font-semibold text-white">Licenciado en Sistemas</strong>. Enfocado en diseñar y programar soluciones estables de software de <strong className="font-semibold text-white">alto rendimiento</strong>.
           </p>
         </div>
 
