@@ -385,10 +385,9 @@ const TECH_ITEMS: TechItem[] = [
 
 interface TechCardProps {
   tech: TechItem;
-  index: number;
 }
 
-function TechCard({ tech, index }: TechCardProps) {
+function TechCard({ tech }: TechCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
@@ -470,13 +469,10 @@ function TechCard({ tech, index }: TechCardProps) {
             />
 
             {/* Header Badge */}
-            <div className="flex justify-between items-center z-10">
+            <div className="flex items-center z-10">
               <span className={`text-[8px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full border ${tech.badgeColor}`}>
                 {tech.category}
               </span>
-              <div className="text-[8px] text-white/20 font-mono tracking-widest">
-                Stack: {index + 1 < 10 ? `0${index + 1}` : index + 1}
-              </div>
             </div>
 
             {/* Logo and title */}
@@ -558,8 +554,8 @@ export default function TechStackSection() {
 
       {/* Optimized responsive grid: 2 columns on mobile, 3 on tablet, 4 on desktop */}
       <div className="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-5 w-full">
-        {TECH_ITEMS.map((tech, i) => (
-          <TechCard key={tech.id} tech={tech} index={i} />
+        {TECH_ITEMS.map((tech) => (
+          <TechCard key={tech.id} tech={tech} />
         ))}
       </div>
     </section>
