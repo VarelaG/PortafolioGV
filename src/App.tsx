@@ -742,165 +742,111 @@ function ProjectCard({
 // FOOTER / CONTACT SECTION (100vh - Screen height)
 // ------------------------------
 function FooterSection({ onContactClick }: { onContactClick: () => void }) {
-  const [time, setTime] = useState('')
-
-  useEffect(() => {
-    const updateTime = () => {
-      const options: Intl.DateTimeFormatOptions = {
-        timeZone: 'America/Argentina/Buenos_Aires',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false,
-      }
-      setTime(new Date().toLocaleTimeString('es-AR', options))
-    }
-    updateTime()
-    const timer = setInterval(updateTime, 1000)
-    return () => clearInterval(timer)
-  }, [])
-
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (
-    <footer id="contacto" className="relative w-full min-h-[100dvh] flex flex-col justify-between bg-[#060606] text-[#D7E2EA] px-6 sm:px-10 md:px-16 pt-20 pb-8 overflow-hidden z-20 border-t border-white/10">
+    <footer id="contacto" className="relative w-full min-h-[100dvh] flex flex-col justify-between bg-[#060606] text-[#D7E2EA] px-6 sm:px-10 md:px-16 pt-24 sm:pt-32 pb-6 overflow-hidden z-20 border-t border-white/10">
       
       {/* Subtle top ambient glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-radial-gradient from-white/[0.03] to-transparent pointer-events-none rounded-full blur-3xl" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-radial-gradient from-white/[0.03] to-transparent pointer-events-none rounded-full blur-3xl" />
 
       {/* Main Container */}
       <div className="w-full max-w-6xl mx-auto flex flex-col flex-grow justify-between z-10">
         
-        {/* Top Meta Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-6 mb-12 sm:mb-16">
-          <span className="text-[10px] sm:text-xs font-mono tracking-[0.25em] text-white/40 uppercase">
-            [03 // CONTACTO & NUEVOS PROYECTOS]
-          </span>
-          <div className="flex items-center gap-2 text-[10px] sm:text-xs font-mono tracking-widest text-white/50 uppercase">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>DISPONIBLE PARA TRABAJAR // BUENOS AIRES {time ? `(${time})` : ''}</span>
-          </div>
-        </div>
-
-        {/* Hero CTA Statement */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10 sm:gap-14 mb-16 sm:mb-20">
-          <div className="max-w-2xl">
-            <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight text-white leading-[1.05]">
-              ¿Tenés una idea o proyecto en mente?
+        {/* Top Minimalist Call to Action */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 sm:gap-12 pb-16 sm:pb-24">
+          <div className="flex flex-col gap-4">
+            <span className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.3em] text-white/30">
+              Contacto
+            </span>
+            <h2 className="text-4xl sm:text-6xl md:text-7xl font-light tracking-tight text-white leading-none">
+              ¿Trabajamos juntos?
             </h2>
-            <p className="text-white/50 text-sm sm:text-base md:text-lg font-light mt-5 max-w-xl leading-relaxed">
-              Especializado en estructurar plataformas web de alto rendimiento, automatizaciones inteligentes y software a medida. Conversemos sobre tu próximo objetivo.
-            </p>
+            <a
+              href="mailto:varelag1999@gmail.com?subject=Propuesta%20de%20Proyecto"
+              className="group inline-flex items-center gap-2 text-xl sm:text-3xl md:text-4xl font-normal text-white/70 hover:text-white transition-colors mt-2 w-max"
+            >
+              <span className="border-b border-white/20 group-hover:border-white transition-colors pb-1">
+                varelag1999@gmail.com
+              </span>
+              <span className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 text-white">
+                ↗
+              </span>
+            </a>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 flex-shrink-0">
+          <div className="flex items-center">
             <button
               onClick={onContactClick}
-              className="group relative inline-flex items-center justify-center px-8 sm:px-10 py-4 rounded-full overflow-hidden border border-white/20 hover:border-white bg-transparent text-white font-medium text-xs sm:text-sm uppercase tracking-widest transition-all duration-[400ms] hover:text-[#0C0C0C] active:scale-[0.97] cursor-pointer"
+              className="group relative inline-flex items-center justify-center px-8 sm:px-9 py-3.5 sm:py-4 rounded-full overflow-hidden border border-white/20 hover:border-white bg-transparent text-white font-medium text-xs uppercase tracking-widest transition-all duration-[400ms] hover:text-[#0C0C0C] active:scale-[0.97] cursor-pointer"
             >
               <div className="absolute inset-0 bg-white translate-y-[102%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] pointer-events-none rounded-full" />
               <span className="relative z-10 flex items-center gap-2 font-semibold">
-                Iniciar una conversación <span className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
+                Iniciar conversación <span className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
               </span>
             </button>
           </div>
         </div>
 
-        {/* Structured 4-Column Directory Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 py-10 border-t border-b border-white/10">
-          {/* Column 1: Direct Contact */}
-          <div className="flex flex-col gap-2">
-            <span className="text-[10px] font-mono tracking-[0.2em] text-white/35 uppercase">
-              01 / CONTACTO DIRECTO
-            </span>
-            <a 
-              href="mailto:varelag1999@gmail.com?subject=Propuesta%20de%20Proyecto" 
-              className="text-sm sm:text-base font-medium text-white hover:text-white/70 transition-colors w-max mt-1"
+        {/* Minimalist Horizontal Bar of Links & Actions */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 py-6 border-t border-b border-white/10 text-xs font-mono uppercase tracking-widest text-white/50">
+          <div className="flex flex-wrap items-center gap-6 sm:gap-10">
+            <a
+              href="https://www.linkedin.com/in/gonzalo-varela-4a0b00291/?skipRedirect=true"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors"
             >
-              varelag1999@gmail.com
+              LinkedIn ↗
             </a>
-            <a 
+            <a
+              href="https://github.com/VarelaG"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors"
+            >
+              GitHub ↗
+            </a>
+            <a
               href="https://wa.me/5492364263654"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs sm:text-sm font-light text-white/50 hover:text-white transition-colors w-max"
+              className="hover:text-white transition-colors"
             >
-              +54 9 236 426-3654
+              WhatsApp ↗
+            </a>
+            <a
+              href="https://vyte-dev.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors"
+            >
+              Vyte Studio ↗
             </a>
           </div>
 
-          {/* Column 2: Ecosystem & Networks */}
-          <div className="flex flex-col gap-2">
-            <span className="text-[10px] font-mono tracking-[0.2em] text-white/35 uppercase">
-              02 / ECOSISTEMA
-            </span>
-            <div className="flex flex-col gap-1.5 mt-1">
-              <a
-                href="https://www.linkedin.com/in/gonzalo-varela-4a0b00291/?skipRedirect=true"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs sm:text-sm font-light text-white/70 hover:text-white transition-colors w-max"
-              >
-                LinkedIn ↗
-              </a>
-              <a
-                href="https://github.com/VarelaG"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs sm:text-sm font-light text-white/70 hover:text-white transition-colors w-max"
-              >
-                GitHub ↗
-              </a>
-              <a
-                href="https://vyte-dev.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs sm:text-sm font-light text-white/70 hover:text-white transition-colors w-max"
-              >
-                Vyte Studio ↗
-              </a>
-            </div>
-          </div>
-
-          {/* Column 3: Profile & Location */}
-          <div className="flex flex-col gap-2">
-            <span className="text-[10px] font-mono tracking-[0.2em] text-white/35 uppercase">
-              03 / PERFIL & UBICACIÓN
-            </span>
-            <p className="text-xs sm:text-sm font-light text-white/70 mt-1 leading-relaxed">
-              Buenos Aires, Argentina<br />
-              Lic. en Sistemas & Freelance
-            </p>
-          </div>
-
-          {/* Column 4: Quick Navigation */}
-          <div className="flex flex-col sm:items-end justify-between gap-4">
-            <span className="text-[10px] font-mono tracking-[0.2em] text-white/35 uppercase">
-              04 / NAVEGACIÓN
-            </span>
-            <button
-              onClick={scrollToTop}
-              className="group inline-flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-white/60 hover:text-white transition-colors cursor-pointer py-1"
-            >
-              VOLVER ARRIBA
-              <span className="transition-transform duration-300 group-hover:-translate-y-1">↑</span>
-            </button>
-          </div>
+          <button
+            onClick={scrollToTop}
+            className="hover:text-white transition-colors flex items-center gap-2 cursor-pointer w-max text-left"
+          >
+            VOLVER ARRIBA
+            <span className="transition-transform duration-300 group-hover:-translate-y-1">↑</span>
+          </button>
         </div>
 
         {/* Massive Typography Headline: VARELA */}
-        <div className="w-full overflow-hidden select-none pointer-events-none pt-12 sm:pt-16 md:pt-20 flex justify-center items-end">
-          <h1 className="text-[clamp(4.8rem,20.5vw,340px)] font-black uppercase text-center leading-[0.76] tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white/85 to-white/20 w-full select-none">
+        <div className="w-full overflow-hidden select-none pointer-events-none pt-10 sm:pt-14 md:pt-16 flex justify-center items-end">
+          <h1 className="text-[clamp(4.8rem,21vw,360px)] font-black uppercase text-center leading-[0.76] tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white/85 to-white/20 w-full select-none">
             VARELA
           </h1>
         </div>
 
-        {/* Bottom Sub-bar Copyright */}
-        <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-3 pt-6 text-[10px] sm:text-xs font-mono text-white/30 uppercase tracking-widest border-t border-white/5">
-          <span>© {new Date().getFullYear()} GONZALO VARELA — ALL RIGHTS RESERVED</span>
-          <span>DISEÑO & DESARROLLO WEB</span>
+        {/* Bottom Minimal Sub-bar */}
+        <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-2 pt-4 text-[9px] sm:text-[10px] font-mono text-white/25 uppercase tracking-widest">
+          <span>© {new Date().getFullYear()} Gonzalo Varela</span>
+          <span>Buenos Aires, Argentina</span>
         </div>
 
       </div>
