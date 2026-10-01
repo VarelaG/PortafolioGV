@@ -66,7 +66,7 @@ export default function Hero({ onContactClick, startAnimation }: HeroProps) {
           <span>/</span>
           <a href="https://github.com/VarelaG" target="_blank" rel="noopener noreferrer">GitHub</a>
           <span>/</span>
-          <a href="mailto:varelag1999@gmail.com">Email</a>
+          <a href="https://wa.me/5492364263654" target="_blank" rel="noopener noreferrer">WhatsApp</a>
         </div>
         <div className="header-right">
           <a href="#contacto" className="header-cta" onClick={(e) => { e.preventDefault(); onContactClick(); }}>Hablemos ↗</a>

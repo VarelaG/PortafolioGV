@@ -77,7 +77,7 @@ export default function App() {
   const [startHeroAnim, setStartHeroAnim] = useState(false)
 
   const handleContact = () => {
-    window.location.href = 'mailto:varelag1999@gmail.com?subject=Hola%20Gonzalo!'
+    window.open('https://wa.me/5492364263654?text=Hola%20Gonzalo!%20Vi%20tu%20portafolio%20y%20me%20gustar%C3%ADa%20consultarte.', '_blank')
   }
 
   const handlePreloaderComplete = () => {
@@ -765,11 +765,13 @@ function FooterSection({ onContactClick }: { onContactClick: () => void }) {
               ¿Trabajamos juntos?
             </h2>
             <a
-              href="mailto:varelag1999@gmail.com?subject=Propuesta%20de%20Proyecto"
+              href="https://wa.me/5492364263654?text=Hola%20Gonzalo!%20Vi%20tu%20portafolio%20y%20me%20gustar%C3%ADa%20consultarte."
+              target="_blank"
+              rel="noopener noreferrer"
               className="group inline-flex items-center gap-2 text-xl sm:text-3xl md:text-4xl font-normal text-white/70 hover:text-white transition-colors mt-2 w-max"
             >
               <span className="border-b border-white/20 group-hover:border-white transition-colors pb-1">
-                varelag1999@gmail.com
+                +54 9 236 426-3654
               </span>
               <span className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 text-white">
                 ↗
