@@ -28,7 +28,7 @@ export default function VyteSection() {
             [02 // ESTUDIO DIGITAL INDEPENDIENTE]
           </span>
           <div className="flex items-center gap-2 text-[10px] sm:text-xs font-mono tracking-widest text-white/50 uppercase">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
             <span>ESTUDIO EN VIVO // VYTE-DEV.COM</span>
           </div>
         </div>
@@ -92,9 +92,9 @@ export default function VyteSection() {
               {/* Browser Window Bar */}
               <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-white/10 bg-zinc-900/40">
                 <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-white/20 group-hover:bg-red-400/80 transition-colors" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-white/20 group-hover:bg-amber-400/80 transition-colors" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-white/20 group-hover:bg-emerald-400/80 transition-colors" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-white/20 group-hover:bg-white/40 transition-colors" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-white/20 group-hover:bg-white/40 transition-colors" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-white/20 group-hover:bg-white/40 transition-colors" />
                 </div>
                 
                 {/* Mockup Address Bar */}
@@ -116,8 +116,8 @@ export default function VyteSection() {
                   <span className="text-[10px] font-mono tracking-[0.2em] text-white/40 uppercase">
                     ESTUDIO WEB PREMIUM
                   </span>
-                  <span className="text-[10px] font-mono tracking-widest text-emerald-400 uppercase flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-[10px] font-mono tracking-widest text-white/70 uppercase flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
                     EN PRODUCCIÓN
                   </span>
                 </div>
@@ -136,16 +136,16 @@ export default function VyteSection() {
                 <div className="flex flex-col gap-3 pt-2">
                   <div className="flex items-center justify-between text-[10px] font-mono tracking-wider text-white/40 uppercase">
                     <span>MÉTRICAS CORE WEB VITALS</span>
-                    <span className="text-emerald-400 font-semibold">100% AUDITADO</span>
+                    <span className="text-white/80 font-semibold">100% AUDITADO</span>
                   </div>
 
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     {SCORES.map((item, idx) => (
                       <div 
                         key={idx}
-                        className="flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl border border-white/5 bg-white/[0.02] group-hover:border-emerald-500/20 group-hover:bg-emerald-500/[0.03] transition-all"
+                        className="flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl border border-white/5 bg-white/[0.02] group-hover:border-white/20 group-hover:bg-white/[0.04] transition-all"
                       >
-                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-emerald-400/80 flex items-center justify-center text-xs sm:text-sm font-bold font-mono text-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.2)]">
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white/50 group-hover:border-white flex items-center justify-center text-xs sm:text-sm font-bold font-mono text-white shadow-[0_0_12px_rgba(255,255,255,0.08)] bg-white/[0.03] transition-all">
                           {item.score}
                         </div>
                         <span className="text-[9px] sm:text-[10px] font-mono tracking-wider text-white/45 mt-2 uppercase text-center truncate w-full">
